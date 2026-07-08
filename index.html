@@ -130,11 +130,14 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .omni-label span{font-size:10.5px;color:var(--ink-3);font-weight:600}
 .rail{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:3px}
 .rail::-webkit-scrollbar{height:0}
-.chan{flex:0 0 auto;width:auto;min-width:56px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;box-shadow:var(--shadow);position:relative}
-.chan .chi{width:28px;height:28px;border-radius:8px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;background:#EEF3F2}
-.chan .chi svg{width:15px;height:15px;color:var(--ti)}
-.chan small{font-size:9px;font-weight:600;color:var(--ink-2);line-height:1.2;display:block}
-.chan.off{opacity:.4}.chan .live-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
+.chan{flex:0 0 auto;min-width:60px;text-align:center;position:relative}
+.chan .chi{width:54px;height:54px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;background:#E9EDEB}
+.chan .chi svg{width:26px;height:26px;color:#6B726E}
+.chan small{font-size:10px;font-weight:600;color:var(--ink-2);line-height:1.2;display:block}
+.chan.live .chi{background:var(--teal)}
+.chan.live .chi svg{color:#fff}
+.chan.live small{color:var(--ti);font-weight:700}
+.chan.off{opacity:.4}
 .timeline{background:var(--card);border-radius:14px;padding:4px 14px;box-shadow:var(--shadow)}
 .tl-title{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);padding:12px 0 9px}
 .ev{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start}
@@ -490,12 +493,12 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       </div>
       <div class="omni-label"><b>Jornada omnicanal</b><span id="chan-count">5 de 6 canais ligados</span></div>
       <div class="rail">
-        <div class="chan" id="chan-wear"><span class="live-dot"></span><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 7l.5-3h5l.5 3M9 17l.5 3h5l.5-3"/></svg></div><small>Wearable</small></div>
-        <div class="chan" id="chan-farm"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v6m0 0l3-3m-3 3L9 5M6 12h12l-1.5 8a2 2 0 01-2 1.7H9.5a2 2 0 01-2-1.7L6 12z"/></svg></div><small>Farmácia</small></div>
-        <div class="chan" id="chan-sns"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div><small>SNS</small></div>
-        <div class="chan" id="chan-hosp"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg></div><small>Hospital</small></div>
-        <div class="chan" id="chan-seg"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg></div><small>Seguradora</small></div>
-        <div class="chan off" id="chan-clin"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><small>Clínica</small></div>
+        <div class="chan live" id="chan-wear"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6l.6 3.2A6 6 0 0118 10v4a6 6 0 01-2.4 4.8L15 22H9l-.6-3.2A6 6 0 016 14v-4a6 6 0 012.4-4.8L9 2zm3 6a4 4 0 100 8 4 4 0 000-8z"/></svg></div><small>Wearable</small></div>
+        <div class="chan" id="chan-farm"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6a1 1 0 011 1v2a1 1 0 01-1 1H9a1 1 0 01-1-1V3a1 1 0 011-1zM7 8.5A1.5 1.5 0 018.5 7h7A1.5 1.5 0 0117 8.5v12a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 017 20.5v-12zM11 11v2H9v2h2v2h2v-2h2v-2h-2v-2h-2z"/></svg></div><small>Farmácia</small></div>
+        <div class="chan" id="chan-sns"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 7v2h18V7l-9-5zM4.5 10.5H7v7H4.5v-7zm6.25 0h2.5v7h-2.5v-7zm6.75 0H20v7h-2.5v-7zM3 19h18v2.5H3V19z"/></svg></div><small>SNS</small></div>
+        <div class="chan" id="chan-hosp"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 22a1 1 0 01-1-1V4a1 1 0 011-1h10a1 1 0 011 1v5h3a1 1 0 011 1v11a1 1 0 01-1 1h-5v-4h-4v4H5zM7 6h2v2H7V6zm4 0h2v2h-2V6zM7 10h2v2H7v-2zm4 0h2v2h-2v-2zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2zm6-2h2v2h-2v-2zm0 4h2v2h-2v-2z"/></svg></div><small>Hospital</small></div>
+        <div class="chan" id="chan-seg"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2l8 3.2V12c0 4.8-3.4 8.4-8 10-4.6-1.6-8-5.2-8-10V5.2L12 2zm-1 6v2.5H8.5v3H11V16h2v-2.5h2.5v-3H13V8h-2z"/></svg></div><small>Seguradora</small></div>
+        <div class="chan off" id="chan-clin"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C5.5 5 2 12 2 12s3.5 7 10 7 10-7 10-7-3.5-7-10-7zm0 3a4 4 0 110 8 4 4 0 010-8z"/><circle cx="12" cy="12" r="1.8"/></svg></div><small>Clínica</small></div>
       </div>
       <div class="timeline">
         <div class="tl-title">Histórico omnicanal — um só fio</div>
@@ -1098,9 +1101,14 @@ tick();setInterval(tick,10000);
 // init with default profile
 updateContent();
 updateRail();
-// deep-link: ?s=N abre diretamente no ecrã N
+// deep-link: ?s=N abre diretamente no ecrã N (sem animação inicial)
 var _s=new URLSearchParams(location.search).get('s');
-if(_s!==null)show(Math.max(0,Math.min(9,+_s||0)));
+if(_s!==null){
+  var st=document.createElement('style');st.textContent='.screen{transition:none!important}';
+  document.head.appendChild(st);
+  show(Math.max(0,Math.min(9,+_s||0)));
+  setTimeout(function(){st.remove();},300);
+}
 </script>
 </body>
 </html>
