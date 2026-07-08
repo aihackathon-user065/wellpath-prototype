@@ -448,11 +448,17 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
         <div class="src-meta"><b>Associação Nacional de Farmácias</b><small>Medicação e renovações</small></div>
         <div class="src-right"><div class="src-state on-s" id="st-farm"><span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado</div><button class="src-btn dis" onclick="toggleSrc('farm')">Desligar</button></div>
       </div>
-      <!-- Wearable -->
-      <div class="src-card on" id="src-wear" data-on="1">
-        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 7l.5-3h5l.5 3M9 17l.5 3h5l.5-3"/></svg></div>
-        <div class="src-meta"><b>Wearable</b><small>Smartwatch e sensor de glicose · contínuo</small></div>
-        <div class="src-right"><div class="src-state on-s" id="st-wear"><span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo</div><button class="src-btn dis" onclick="toggleSrc('wear')">Desligar</button></div>
+      <!-- Whoop -->
+      <div class="src-card on" id="src-whoop" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2c2.2 0 4 1.8 4 4v12c0 2.2-1.8 4-4 4s-4-1.8-4-4V6c0-2.2 1.8-4 4-4z"/><circle cx="12" cy="12" r="1.6"/></svg></div>
+        <div class="src-meta"><b>Whoop</b><small>Pulseira · ritmo, sono e esforço · contínuo</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-whoop"><span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo</div><button class="src-btn dis" onclick="toggleSrc('whoop')">Desligar</button></div>
+      </div>
+      <!-- Apple Health -->
+      <div class="src-card on" id="src-ahealth" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.2-4.6-9.2-8.8C1.2 8.6 3.2 5.4 6.5 5.4c2 0 3.6 1 4.5 2.4L12 9l1-1.2c.9-1.4 2.5-2.4 4.5-2.4 3.3 0 5.3 3.2 3.7 6.8C19.2 16.4 12 21 12 21z"/></svg></div>
+        <div class="src-meta"><b>Apple Health</b><small>Passos, glicemia e atividade · contínuo</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-ahealth"><span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo</div><button class="src-btn dis" onclick="toggleSrc('ahealth')">Desligar</button></div>
       </div>
       <!-- Hospital -->
       <div class="src-card on" id="src-hosp" data-on="1">
@@ -484,15 +490,16 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       <div class="bodymap">
         <svg class="fig" viewBox="0 0 120 250" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="26" r="18"/><path d="M52 44 h16 v6 c14 3 22 14 22 30 v34 c0 6-4 9-9 9 l-2-30 -1 42 c0 2-1 32-2 46 c-1 8-11 8-12 0 l-4-34 -4 34 c-1 8-11 8-12 0 c-1-14-2-44-2-46 l-1-42 -2 30 c-5 0-9-3-9-9 v-34 c0-16 8-27 22-30 z"/></svg>
         <div class="anchor an-hr"></div>
-        <div class="vchip cn-hr"><span class="beat-dot"></span><div class="vt"><b id="chip-hr">72<small> bpm</small></b><span id="chip-hr-l">Ritmo · Wearable</span></div></div>
+        <div class="vchip cn-hr"><span class="beat-dot"></span><div class="vt"><b id="chip-hr">72<small> bpm</small></b><span id="chip-hr-l">Ritmo · Whoop</span></div></div>
         <div class="anchor an-gl"></div>
         <div class="vchip cn-gl"><div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3c4 5 6 8 6 11a6 6 0 01-12 0c0-3 2-6 6-11z"/></svg></div><div class="vt"><b id="chip-mid">126<small> mg/dL</small></b><span id="chip-mid-l">Glicemia · Sensor</span></div></div>
         <div class="anchor an-st"></div>
-        <div class="vchip cn-st"><div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 20l3-9 4 2 2-7M18 4l1 3"/></svg></div><div class="vt"><b id="chip-steps">5 240<small> passos</small></b><span id="chip-steps-l">Hoje · Wearable</span></div></div>
+        <div class="vchip cn-st"><div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 20l3-9 4 2 2-7M18 4l1 3"/></svg></div><div class="vt"><b id="chip-steps">5 240<small> passos</small></b><span id="chip-steps-l">Hoje · Apple Health</span></div></div>
       </div>
       <div class="omni-label"><b>Jornada omnicanal</b><span id="chan-count">5 de 6 canais ligados</span></div>
       <div class="rail">
-        <div class="chan live" id="chan-wear"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6l.6 3.2A6 6 0 0118 10v4a6 6 0 01-2.4 4.8L15 22H9l-.6-3.2A6 6 0 016 14v-4a6 6 0 012.4-4.8L9 2zm3 6a4 4 0 100 8 4 4 0 000-8z"/></svg></div><small>Wearable</small></div>
+        <div class="chan live" id="chan-whoop"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2c2.2 0 4 1.8 4 4v12c0 2.2-1.8 4-4 4s-4-1.8-4-4V6c0-2.2 1.8-4 4-4zm0 8.4a1.6 1.6 0 100 3.2 1.6 1.6 0 000-3.2z"/></svg></div><small>Whoop</small></div>
+        <div class="chan live" id="chan-ahealth"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.2-4.6-9.2-8.8C1.2 8.6 3.2 5.4 6.5 5.4c2 0 3.6 1 4.5 2.4L12 9l1-1.2c.9-1.4 2.5-2.4 4.5-2.4 3.3 0 5.3 3.2 3.7 6.8C19.2 16.4 12 21 12 21z"/></svg></div><small>A. Health</small></div>
         <div class="chan" id="chan-farm"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6a1 1 0 011 1v2a1 1 0 01-1 1H9a1 1 0 01-1-1V3a1 1 0 011-1zM7 8.5A1.5 1.5 0 018.5 7h7A1.5 1.5 0 0117 8.5v12a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 017 20.5v-12zM11 11v2H9v2h2v2h2v-2h2v-2h-2v-2h-2z"/></svg></div><small>Farmácia</small></div>
         <div class="chan" id="chan-sns"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 7v2h18V7l-9-5zM4.5 10.5H7v7H4.5v-7zm6.25 0h2.5v7h-2.5v-7zm6.75 0H20v7h-2.5v-7zM3 19h18v2.5H3V19z"/></svg></div><small>SNS</small></div>
         <div class="chan" id="chan-hosp"><div class="chi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 22a1 1 0 01-1-1V4a1 1 0 011-1h10a1 1 0 011 1v5h3a1 1 0 011 1v11a1 1 0 01-1 1h-5v-4h-4v4H5zM7 6h2v2H7V6zm4 0h2v2h-2V6zM7 10h2v2H7v-2zm4 0h2v2h-2v-2zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2zm6-2h2v2h-2v-2zm0 4h2v2h-2v-2z"/></svg></div><small>Hospital</small></div>
@@ -620,7 +627,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
           </div>
           <div class="doc-card doc-tl">
             <div class="dc-h"><span>Histórico omnicanal</span><span class="live-badge" style="background:#EAF4EC;color:var(--ti);padding:3px 8px;font-size:9px"><span class="pulse-dot" style="background:var(--green);width:5px;height:5px"></span>atualizado agora</span></div>
-            <div class="ev"><span class="ed new"></span><div class="etxt"><b id="ptl1">Sinais vitais — ritmo e glicemia</b><small>agora mesmo</small></div><span class="src-tag">Wearable</span></div>
+            <div class="ev"><span class="ed new"></span><div class="etxt"><b id="ptl1">Sinais vitais — ritmo e glicemia</b><small>agora mesmo</small></div><span class="src-tag">Whoop</span></div>
             <div class="ev"><span class="ed"></span><div class="etxt"><b id="ptl2">Metformina renovada</b><small id="ptl2t">ontem</small></div><span class="src-tag" id="ptl2s">Farmácia</span></div>
             <div class="ev"><span class="ed"></span><div class="etxt"><b id="ptl3">Análises — HbA1c 7,1%</b><small id="ptl3t">Jan 2026</small></div><span class="src-tag" id="ptl3s">SNS</span></div>
             <div class="ev"><span class="ed"></span><div class="etxt"><b id="ptl4">Rastreio oftalmológico</b><small id="ptl4t">há 26 meses</small></div><span class="src-tag" id="ptl4s">Clínica</span></div>
@@ -699,7 +706,7 @@ const PROFILES={
     cond:'Diabetes tipo 2',condLong:'Diabetes tipo 2 · seguida no SNS',
     title1:'Bem-vinda ao Wellpath',
     chips:{hr:'72',mid:'126',midU:' mg/dL',midL:'Glicemia · Sensor',steps:'5 240'},
-    tl:[['Ritmo cardíaco e glicemia','agora mesmo','Wearable'],['Metformina renovada','ontem','Farmácia'],['Consulta de diabetologia','há 3 meses','SNS'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Vacina da gripe','Out 2025','Farmácia'],['Rastreio oftalmológico','mai 2024','Clínica'],['Diagnóstico — Diabetes tipo 2','2020','SNS']],
+    tl:[['Ritmo cardíaco e esforço','agora mesmo','Whoop'],['Glicemia contínua — sensor','agora mesmo','Apple Health'],['Metformina renovada','ontem','Farmácia'],['Consulta de diabetologia','há 3 meses','SNS'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Vacina da gripe','Out 2025','Farmácia'],['Rastreio oftalmológico','mai 2024','Clínica'],['Diagnóstico — Diabetes tipo 2','2020','SNS']],
     gapTitle:'Falta um rastreio importante',
     has:[['Diabetes tipo 2','SNS'],['HbA1c 7,1%','Jan 2026 · SNS'],['Metformina','Associação Nacional de Farmácias']],
     miss:'Exame oftalmológico de rastreio',missT:'há 26 meses',
@@ -715,13 +722,13 @@ const PROFILES={
     contactMsg:'Olá Maria, fala-lhe a sua equipa de saúde através do Wellpath. Verificámos que o rastreio oftalmológico está em atraso (recomendado anual em diabéticos). Podemos ajudar a agendar — responda quando lhe for conveniente.',
     portal:{dm1k:'HbA1c',dm1v:'7,1%',dm3k:'Adesão',dm3v:'94%',
       gapTitle:'Rastreio oftalmológico em atraso',gapSub:'Último registo há 26 meses · recomendado anual em diabéticos',
-      tl:[['Sinais vitais — ritmo e glicemia','agora mesmo','Wearable'],['Metformina renovada','ontem','Farmácia'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Rastreio oftalmológico','há 26 meses','Clínica']]}
+      tl:[['Sinais vitais — ritmo e glicemia','agora mesmo','Whoop'],['Metformina renovada','ontem','Farmácia'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Rastreio oftalmológico','há 26 meses','Clínica']]}
   },
   joao:{id:'joao',name:'João Ferreira',age:34,initials:'J',color:'#5E7B9A',
     cond:'Sem patologia crónica',condLong:'Adulto saudável · sem check-up há 2 anos',
     title1:'Bem-vindo ao Wellpath',
     chips:{hr:'78',mid:'27,4',midU:' IMC',midL:'Índice · Estimado',steps:'3 210'},
-    tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['Ibuprofeno — compra pontual','há 6 meses','Farmácia'],['Urgência — entorse do tornozelo','2024','Hospital'],['Análises de rotina','2023','SNS'],['Consulta medicina geral','2023','SNS'],['Vacina Tdap','2022','SNS']],
+    tl:[['Freq. cardíaca e esforço','agora mesmo','Whoop'],['Passos e atividade diária','hoje','Apple Health'],['Ibuprofeno — compra pontual','há 6 meses','Farmácia'],['Urgência — entorse do tornozelo','2024','Hospital'],['Análises de rotina','2023','SNS'],['Consulta medicina geral','2023','SNS'],['Vacina Tdap','2022','SNS']],
     gapTitle:'Rastreio preventivo em atraso',
     has:[['Vacinação em dia','SNS'],['Análises de rotina','2023 · SNS']],
     miss:'Check-up anual + espirometria',missT:'há 2 anos',
@@ -737,15 +744,15 @@ const PROFILES={
     contactMsg:'Olá João, fala-lhe a sua equipa de saúde através do Wellpath. O check-up anual e a espirometria estão em atraso há 2 anos. Podemos ajudar a agendar — responda quando lhe for conveniente.',
     portal:{dm1k:'Freq. card.',dm1v:'78bpm',dm3k:'Passos',dm3v:'3 210',
       gapTitle:'Check-up e espirometria em atraso',gapSub:'Sem consulta há 2 anos · exposição tabágica registada',
-      tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['Análises de rotina','2023','SNS'],['Consulta medicina geral','2023','SNS'],['Vacina Tdap','2022','SNS']]}
+      tl:[['Freq. cardíaca e atividade','agora mesmo','Whoop'],['Análises de rotina','2023','SNS'],['Consulta medicina geral','2023','SNS'],['Vacina Tdap','2022','SNS']]}
   },
   ana:{id:'ana',name:'Ana Carvalho',age:72,initials:'A',color:'#9B7B5E',
     cond:'Hipertensão + colesterol alto',condLong:'Hipertensão · polimedicada · 3 fármacos',
     title1:'Bem-vinda ao Wellpath',
     chips:{hr:'128/82',mid:'91',midU:'%',midL:'Adesão · Farmácia',steps:'1 840'},
-    tl:[['Tensão arterial e atividade','agora mesmo','Wearable'],['Estatina renovada','ontem','Farmácia'],['Anti-hipertensor renovado','há 2 semanas','Farmácia'],['Consulta medicina geral','há 1 mês','SNS'],['Análises — colesterol LDL','Mar 2026','SNS'],['Densitometria óssea','2021','Hospital'],['Hipertensão diagnosticada','2018','SNS']],
+    tl:[['Tensão arterial e esforço','agora mesmo','Whoop'],['Passos diários','hoje','Apple Health'],['Estatina renovada','ontem','Farmácia'],['Anti-hipertensor renovado','há 2 semanas','Farmácia'],['Consulta medicina geral','há 1 mês','SNS'],['Análises — colesterol LDL','Mar 2026','SNS'],['Densitometria óssea','2021','Hospital'],['Hipertensão diagnosticada','2018','SNS']],
     gapTitle:'Rastreio de osteoporose em atraso',
-    has:[['Hipertensão controlada','SNS'],['Estatina renovada','Farmácia'],['TA 128/82','Wearable']],
+    has:[['Hipertensão controlada','SNS'],['Estatina renovada','Farmácia'],['TA 128/82','Whoop']],
     miss:'Densitometria óssea (DXA)',missT:'há 3 anos',
     reason:'Mulheres acima dos 65 anos com fatores de risco têm indicação de densitometria bienal. O diagnóstico precoce previne fraturas.',
     cross:'SNS + Farmácia',
@@ -759,13 +766,13 @@ const PROFILES={
     contactMsg:'Olá Ana, fala-lhe a sua equipa de saúde através do Wellpath. A densitometria óssea está em atraso há 3 anos (recomendada bienal acima dos 65 anos). Podemos ajudar a agendar — responda quando lhe for conveniente.',
     portal:{dm1k:'Tensão art.',dm1v:'128/82',dm3k:'Adesão',dm3v:'91%',
       gapTitle:'Densitometria óssea em atraso',gapSub:'Última DXA há 3 anos · mulher >65 com fatores de risco',
-      tl:[['Tensão arterial e atividade','agora mesmo','Wearable'],['Estatina renovada','ontem','Farmácia'],['Consulta medicina geral','há 1 mês','SNS'],['Densitometria DXA','há 3 anos','Hospital']]}
+      tl:[['Tensão arterial e atividade','agora mesmo','Whoop'],['Estatina renovada','ontem','Farmácia'],['Consulta medicina geral','há 1 mês','SNS'],['Densitometria DXA','há 3 anos','Hospital']]}
   },
   lucas:{id:'lucas',name:'Lucas Rodrigues',age:9,initials:'L',color:'#5E7B9B',
     cond:'Vacina em atraso',condLong:'Saudável · vacinação incompleta',
     title1:'Bem-vindo ao Wellpath',
     chips:{hr:'88',mid:'32',midU:' kg',midL:'Peso · SNS',steps:'8 420'},
-    tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['Vacina da gripe pediátrica','Nov 2025','SNS'],['Xarope para a tosse — prescrição','há 8 meses','Farmácia'],['Crescimento normal confirmado','2024','SNS'],['Consulta vigilância','2023','SNS'],['1.ª dose VASPR','2019','SNS']],
+    tl:[['Freq. cardíaca e esforço','agora mesmo','Whoop'],['Atividade física','hoje','Apple Health'],['Vacina da gripe pediátrica','Nov 2025','SNS'],['Xarope para a tosse — prescrição','há 8 meses','Farmácia'],['Crescimento normal confirmado','2024','SNS'],['Consulta vigilância','2023','SNS'],['1.ª dose VASPR','2019','SNS']],
     gapTitle:'Vacina em atraso',
     has:[['1.ª dose VASPR','2019 · SNS'],['Crescimento normal','SNS'],['Sem alergias','SNS']],
     miss:'Vacina VASPR — 2.ª dose',missT:'há 14 meses',
@@ -781,13 +788,13 @@ const PROFILES={
     contactMsg:'Olá, fala-lhe a equipa de saúde do Lucas através do Wellpath. A 2.ª dose da vacina VASPR está em atraso há 14 meses. Podemos ajudar a agendar a vacinação — responda quando lhe for conveniente.',
     portal:{dm1k:'Freq. card.',dm1v:'88bpm',dm3k:'Passos',dm3v:'8 420',
       gapTitle:'Vacina VASPR 2.ª dose em atraso',gapSub:'Prevista para os 5–6 anos · em falta há 14 meses',
-      tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['1.ª dose VASPR','2019','SNS'],['Consulta vigilância','2024','SNS'],['Crescimento normal','2024','SNS']]}
+      tl:[['Freq. cardíaca e atividade','agora mesmo','Whoop'],['1.ª dose VASPR','2019','SNS'],['Consulta vigilância','2024','SNS'],['Crescimento normal','2024','SNS']]}
   },
   sofia:{id:'sofia',name:'Sofia Mendes',age:45,initials:'S',color:'#7B5E9B',
     cond:'Histórico familiar oncológico',condLong:'Pré-menopausa · histórico familiar cancro mama',
     title1:'Bem-vinda ao Wellpath',
-    chips:{hr:'71',mid:'98',midU:'%',midL:'SpO₂ · Wearable',steps:'6 100'},
-    tl:[['Freq. cardíaca e SpO₂','agora mesmo','Wearable'],['Contracetivo renovado','há 1 semana','Farmácia'],['Check-up do seguro','Fev 2026','Seguradora'],['Exame ginecológico','2024','Seguradora'],['Mamografia bilateral','2024','Clínica'],['Ecografia pélvica','2023','Clínica'],['Consulta medicina geral','2024','SNS']],
+    chips:{hr:'71',mid:'98',midU:'%',midL:'SpO₂ · Whoop',steps:'6 100'},
+    tl:[['Freq. cardíaca e SpO₂','agora mesmo','Whoop'],['Passos e sono','hoje','Apple Health'],['Contracetivo renovado','há 1 semana','Farmácia'],['Check-up do seguro','Fev 2026','Seguradora'],['Exame ginecológico','2024','Seguradora'],['Mamografia bilateral','2024','Clínica'],['Ecografia pélvica','2023','Clínica'],['Consulta medicina geral','2024','SNS']],
     gapTitle:'Mamografia de rastreio em atraso',
     has:[['Exame ginecológico','2024 · Seguradora'],['Ecografia pélvica','2023 · Clínica'],['Sem patologia crónica','SNS']],
     miss:'Mamografia bilateral',missT:'há 2 anos',
@@ -803,7 +810,7 @@ const PROFILES={
     contactMsg:'Olá Sofia, fala-lhe a sua equipa de saúde através do Wellpath. A mamografia de rastreio está em atraso há 2 anos (recomendada anual com histórico familiar). Podemos ajudar a agendar — responda quando lhe for conveniente.',
     portal:{dm1k:'Freq. card.',dm1v:'71bpm',dm3k:'Passos',dm3v:'6 100',
       gapTitle:'Mamografia de rastreio em atraso',gapSub:'Histórico familiar 1.º grau · última mamografia há 2 anos',
-      tl:[['Freq. cardíaca e SpO₂','agora mesmo','Wearable'],['Exame ginecológico','2024','Seguradora'],['Ecografia pélvica','2023','Clínica'],['Mamografia','há 2 anos','Clínica']]}
+      tl:[['Freq. cardíaca e SpO₂','agora mesmo','Whoop'],['Exame ginecológico','2024','Seguradora'],['Ecografia pélvica','2023','Clínica'],['Mamografia','há 2 anos','Clínica']]}
   }
 };
 
@@ -818,7 +825,7 @@ function go(n,outcome){if(outcome)setStatus(outcome);show(n);}
 function prev(){if(cur>0)show(cur-1);}
 function restart(){
   // reset sources
-  ['sns','farm','wear','hosp','seg'].forEach(function(id){setSourceOn(id,true);});
+  ['sns','farm','whoop','ahealth','hosp','seg'].forEach(function(id){setSourceOn(id,true);});
   setSourceOn('clin',false);
   updateRail();filterTimeline();updateBody();
   closeModal('modal-contact'); closeModal('modal-remind'); endCall(); closeCompose();
@@ -905,8 +912,8 @@ function updateContent(){
 }
 
 // Source helpers
-var SRC_MAP={'Wearable':'wear','Sensor':'wear','Estimado':'wear','Farmácia':'farm','Associação Nacional de Farmácias':'farm','SNS':'sns','Clínica':'clin','Hospital':'hosp','Seguradora':'seg'};
-var SRC_IDS=['wear','farm','sns','hosp','seg','clin'];
+var SRC_MAP={'Whoop':'whoop','Apple Health':'ahealth','Wearable':'whoop','Sensor':'ahealth','Estimado':'whoop','Farmácia':'farm','Associação Nacional de Farmácias':'farm','SNS':'sns','Clínica':'clin','Hospital':'hosp','Seguradora':'seg'};
+var SRC_IDS=['whoop','ahealth','farm','sns','hosp','seg','clin'];
 function srcOnId(id){var c=document.getElementById('src-'+id);return !c||c.dataset.on==='1';}
 function srcOn(name){return srcOnId(SRC_MAP[name]||'sns');}
 function updateRail(){
@@ -920,16 +927,17 @@ function updateRail(){
 }
 function updateBody(){
   var p=PROFILES[activeP];
-  var wearOn=srcOnId('wear');
-  var midSrc=SRC_MAP[(p.chips.midL.split('·').pop()||'').trim()]||'wear';
+  var hrOn=srcOnId('whoop'), stepsOn=srcOnId('ahealth');
+  var midSrc=SRC_MAP[(p.chips.midL.split('·').pop()||'').trim()]||'ahealth';
   var midOn=srcOnId(midSrc);
-  document.getElementById('chip-hr-l').textContent=wearOn?'Ritmo · Wearable':'Ritmo · últ. leitura hoje';
-  document.getElementById('chip-steps-l').textContent=wearOn?'Hoje · Wearable':'Passos · últ. leitura hoje';
+  document.getElementById('chip-hr-l').textContent=hrOn?'Ritmo · Whoop':'Ritmo · últ. leitura hoje';
+  document.getElementById('chip-steps-l').textContent=stepsOn?'Hoje · Apple Health':'Passos · últ. leitura hoje';
   document.getElementById('chip-mid-l').textContent=midOn?p.chips.midL:p.chips.midL.split('·')[0].trim()+' · últ. leitura hoje';
-  var bm=document.querySelector('.bodymap');if(bm)bm.classList.toggle('stale',!wearOn);
+  var bm=document.querySelector('.bodymap');if(bm)bm.classList.toggle('stale',!hrOn);
   var lb=document.getElementById('body-live');
+  var anyLive=hrOn||stepsOn;
   if(lb){
-    if(wearOn){lb.innerHTML='<span class="pulse-dot" style="background:var(--green)"></span>Ao vivo';lb.style.background='';lb.style.color='';}
+    if(anyLive){lb.innerHTML='<span class="pulse-dot" style="background:var(--green)"></span>Ao vivo';lb.style.background='';lb.style.color='';}
     else{lb.textContent='Últimas leituras';lb.style.background='#F0F2F1';lb.style.color='var(--ink-3)';}
   }
 }
@@ -972,7 +980,7 @@ function setSourceOn(id,on){
   card.dataset.on=on?'1':'0';
   card.classList.toggle('on',on);
   if(on){
-    if(id==='wear'){stEl.innerHTML='<span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo';}
+    if(id==='whoop'||id==='ahealth'){stEl.innerHTML='<span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo';}
     else{stEl.innerHTML='<span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado';}
     stEl.className='src-state on-s';
     if(btn){btn.textContent='Desligar';btn.className='src-btn dis';}
@@ -1081,11 +1089,11 @@ var secs=4;
 function live(){
   secs+=3;if(secs>59)secs=4;
   var p=PROFILES[activeP];
-  if(srcOnId('wear')){
+  if(srcOnId('whoop')){
     var hr=69+Math.floor(Math.random()*8);
     document.getElementById('chip-hr').innerHTML=hr+'<small> bpm</small>';
-    if(p.id==='maria'){var g=124+Math.floor(Math.random()*6);document.getElementById('chip-mid').innerHTML=g+'<small> mg/dL</small>';}
   }
+  if(srcOnId('ahealth')&&p.id==='maria'){var g=124+Math.floor(Math.random()*6);document.getElementById('chip-mid').innerHTML=g+'<small> mg/dL</small>';}
   var g2=document.getElementById('gluc2');if(g2)g2.textContent=124+Math.floor(Math.random()*6);
   var g2t=document.getElementById('gluc2-t');if(g2t)g2t.textContent='há '+secs+' s';
   var lt=document.getElementById('lock-time');if(lt){var d=new Date();lt.textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
