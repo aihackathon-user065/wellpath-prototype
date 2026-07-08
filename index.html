@@ -365,7 +365,6 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
   .notch,.sb{display:none}
   .screen{inset:0;padding:calc(14px + env(safe-area-inset-top)) 18px 88px}
   .screen.lock,.screen.doc,.screen.handover{inset:0;padding:0}
-  #portal-btn{display:none!important}
   .doc-head{padding-top:calc(18px + env(safe-area-inset-top))}
   .doc-body{padding-bottom:96px}
   .compose-head{padding-top:calc(14px + env(safe-area-inset-top))}
@@ -690,7 +689,6 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 <div class="controls">
   <button onclick="restart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8M3 3v5h5"/></svg>Recomeçar</button>
   <button onclick="prev()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Anterior</button>
-  <button id="portal-btn" style="display:none;border-color:var(--teal);color:var(--ti);font-weight:700" onclick="go(8,'marcar')">Continuar para o portal do profissional →</button>
 </div>
 <p class="caption">Wellpath · protótipo de demonstração · dados sintéticos · recomendações preventivas, nunca prescritivas</p>
 </div><!-- /stage -->
@@ -815,8 +813,6 @@ const ss=document.querySelectorAll('.screen'), sb=document.getElementById('sb');
 function show(n){
   ss.forEach(function(s){var i=+s.dataset.i;s.classList.remove('active','past');if(i===n){s.classList.add('active');s.scrollTop=0;}else if(i<n)s.classList.add('past');});
   sb.classList.toggle('light',n>=7); cur=n;
-  var pb=document.getElementById('portal-btn');
-  if(pb)pb.style.display=n===7?'flex':'none';
 }
 function go(n,outcome){if(outcome)setStatus(outcome);show(n);}
 function prev(){if(cur>0)show(cur-1);}
