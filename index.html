@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wellpath — protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F7F5;--card:#fff;--ink:#1E2422;--ink-2:#6B726E;--ink-3:#9AA09C;--line:#ECECE8;
+  --teal:#3A7D7B;--ti:#2C5F5D;--amber:#E0A458;--abg:#FBF3E7;--aline:#F0DCBE;
+  --green:#5BA872;--slate:#213230;--wa:#075E54;--wa2:#128C7E;--wa-light:#DCF8C6;
+  --shadow:0 1px 2px rgba(30,36,34,.04),0 8px 24px rgba(30,36,34,.06);
+  --lift:0 2px 6px rgba(30,36,34,.06),0 18px 48px rgba(30,36,34,.12);
+  --font:'Inter',-apple-system,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--font);background:radial-gradient(1200px 700px at 50% -10%,#EEF2F1 0%,rgba(238,242,241,0) 60%),#EDEEEC;
+  color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;gap:18px;padding:28px 16px;-webkit-font-smoothing:antialiased}
+.stage{display:flex;flex-direction:column;align-items:center;gap:14px}
+.phone{width:390px;height:820px;max-height:88vh;background:#0E1413;border-radius:52px;padding:12px;box-shadow:var(--lift);position:relative}
+.sw{background:var(--bg);border-radius:42px;width:100%;height:100%;overflow:hidden;position:relative}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#0E1413;border-radius:0 0 18px 18px;z-index:60}
+.sb{position:absolute;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px 0;font-size:13px;font-weight:600;color:var(--ink);z-index:50;transition:color .3s}
+.sb.light{color:#fff}.sb .bars{display:flex;gap:4px;align-items:flex-end}
+.sb .bar{width:3px;border-radius:2px;background:currentColor}
+.screens{position:absolute;inset:0;padding-top:52px}
+.screen{position:absolute;inset:0;padding:52px 22px 20px;display:flex;flex-direction:column;
+  opacity:0;transform:translateX(24px);pointer-events:none;
+  transition:opacity .42s cubic-bezier(.4,0,.2,1),transform .42s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.screen::-webkit-scrollbar{width:0}
+.screen.active{opacity:1;transform:none;pointer-events:auto}
+.screen.past{opacity:0;transform:translateX(-24px)}
+.grow{flex:1 1 auto;min-height:6px}
+.screen>*{flex-shrink:0}
+h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-bottom:7px}
+.sub{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:9px;margin-bottom:18px}
+.logo{width:30px;height:30px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.logo svg{width:17px;height:17px}
+.brand b{font-size:17px;font-weight:700;letter-spacing:-.02em}
+.brand span{font-size:12px;color:var(--ink-3);font-weight:500}
+.cta{background:var(--teal);color:#fff;border:none;font-family:var(--font);font-size:15px;font-weight:600;
+  padding:16px;border-radius:15px;cursor:pointer;width:100%;margin-top:12px;transition:all .2s;letter-spacing:-.01em}
+.cta:hover{background:var(--ti);transform:translateY(-1px)}
+.steps{display:flex;gap:5px;justify-content:center;padding-top:12px}
+.steps i{height:5px;border-radius:3px;background:#D9DBD8;flex:1 1 auto;max-width:30px;transition:all .3s}
+.steps i.on{background:var(--teal)}.steps i.done{background:#BFD8D5}
+.pulse-dot{width:8px;height:8px;border-radius:50%;display:inline-block;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(91,168,114,.5)}70%{box-shadow:0 0 0 7px rgba(91,168,114,0)}100%{box-shadow:0 0 0 0 rgba(91,168,114,0)}}
+@media(prefers-reduced-motion:reduce){.pulse-dot{animation:none}}
+.live-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--green);background:#EAF4EC;border-radius:20px;padding:5px 10px}
+
+/* S0 profile */
+.prof-head{text-align:center;margin-bottom:16px}
+.wp-hero{width:52px;height:52px;border-radius:15px;background:var(--teal);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.wp-hero svg{width:28px;height:28px}
+.prof-grid{display:flex;flex-direction:column;gap:10px}
+.pcard{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;
+  display:flex;gap:13px;align-items:flex-start;cursor:pointer;box-shadow:var(--shadow);transition:all .22s}
+.pcard:hover,.pcard:active{border-color:var(--teal);transform:translateY(-1px);box-shadow:var(--lift)}
+.pav{width:46px;height:46px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff}
+.pinfo b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.ptag{display:inline-block;font-size:10.5px;font-weight:600;background:#F0F2F1;color:var(--ti);padding:3px 9px;border-radius:20px;margin:4px 0 5px}
+.pinfo p{font-size:12px;color:var(--ink-2);line-height:1.45}
+
+/* S1 registo */
+.hero-logo{width:52px;height:52px;border-radius:15px;background:var(--teal);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.hero-logo svg{width:28px;height:28px}
+.field{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.field label{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.field .val{font-size:15px;font-weight:600;margin-top:3px;letter-spacing:-.01em}
+.field .val.dim{color:var(--ink-3);font-weight:500;letter-spacing:1px}
+.consent{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:2px 14px;box-shadow:var(--shadow);margin-top:6px}
+.crow{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:none}
+.crow .ci{width:32px;height:32px;border-radius:9px;background:#F0F2F1;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.crow .ci svg{width:16px;height:16px;color:var(--ti)}
+.crow .ct{flex:1 1 auto}.crow .ct b{display:block;font-size:13px;font-weight:600}
+.crow .ct small{font-size:11.5px;color:var(--ink-3);font-weight:500;line-height:1.4}
+.toggle{width:42px;height:25px;border-radius:20px;background:var(--teal);position:relative;flex:0 0 auto;cursor:pointer;transition:background .2s}
+.toggle::after{content:"";position:absolute;top:3px;left:20px;width:19px;height:19px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.off{background:#D9DBD8}.toggle.off::after{left:3px}
+.rgpd{font-size:11px;color:var(--ink-3);text-align:center;margin-top:12px;line-height:1.5;display:flex;align-items:center;justify-content:center;gap:5px}
+.rgpd svg{width:12px;height:12px;flex:0 0 auto}
+
+/* S2 fontes */
+.src-card{background:var(--card);border-radius:15px;padding:14px 15px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);margin-bottom:10px;border:1.5px solid transparent;transition:border-color .3s}
+.src-card.on{border-color:#DCEBE9}
+.src-ic{width:38px;height:38px;border-radius:10px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#F0F2F1}
+.src-ic svg{width:18px;height:18px;color:var(--ti)}
+.src-meta{flex:1 1 auto;min-width:0}
+.src-meta b{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.src-meta small{font-size:11.5px;color:var(--ink-3);font-weight:500}
+.src-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:0 0 auto}
+.src-state{font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:4px}
+.src-state.on-s{color:var(--green)}.src-state.off-s{color:var(--ink-3)}
+.tick-c{width:16px;height:16px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center}
+.tick-c svg{width:10px;height:10px;color:#fff}
+.src-btn{border:1px solid var(--line);background:#fff;color:var(--ti);font-family:var(--font);font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:18px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.src-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.src-btn.dis{color:var(--ink-3)}
+.src-btn.dis:hover{background:#F0F2F1;color:var(--ink-3);border-color:var(--line)}
+.synced{text-align:center;font-size:11.5px;color:var(--green);font-weight:600;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* S3 corpo */
+.live-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.live-head b{font-size:22px;font-weight:700;letter-spacing:-.03em}
+.bodymap{position:relative;height:210px;margin:4px 0 2px;display:flex;align-items:center;justify-content:center}
+.bodymap svg.fig{height:200px;width:auto}
+.bodymap svg.fig path,.bodymap svg.fig circle{fill:#E4EBEA;stroke:#CFDAD8;stroke-width:1}
+.vchip{position:absolute;background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px 10px;box-shadow:var(--lift);display:flex;align-items:center;gap:8px;min-width:100px;z-index:3}
+.vchip .vi{width:24px;height:24px;border-radius:7px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#F0F2F1}
+.vchip .vi svg{width:14px;height:14px;color:var(--ti)}
+.vchip .vt b{display:block;font-size:13px;font-weight:700;letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
+.vchip .vt b small{font-size:9px;font-weight:600;color:var(--ink-3)}
+.vchip .vt span{font-size:9px;color:var(--ink-3);font-weight:600;white-space:nowrap;display:block}
+.beat-dot{width:20px;height:20px;border-radius:6px;background:#FBEDED;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.beat-dot::after{content:"";width:7px;height:7px;border-radius:50%;background:#C86B6B;animation:pulse 1.2s infinite}
+.bodymap.stale .beat-dot::after{animation:none;background:#B9C2BF}
+.bodymap.stale .beat-dot{background:#F0F2F1}
+.anchor{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--teal);z-index:2;border:2px solid var(--bg);box-shadow:0 0 0 3px rgba(58,125,123,.15)}
+.an-hr{top:56px;left:188px}.cn-hr{top:26px;right:0}
+.an-gl{top:108px;left:148px}.cn-gl{top:80px;left:0}
+.an-st{top:160px;left:188px}.cn-st{top:134px;right:0}
+.omni-label{display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px}
+.omni-label b{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.omni-label span{font-size:10.5px;color:var(--ink-3);font-weight:600}
+.rail{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:3px}
+.rail::-webkit-scrollbar{height:0}
+.chan{flex:0 0 auto;width:auto;min-width:56px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;box-shadow:var(--shadow);position:relative}
+.chan .chi{width:28px;height:28px;border-radius:8px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;background:#EEF3F2}
+.chan .chi svg{width:15px;height:15px;color:var(--ti)}
+.chan small{font-size:9px;font-weight:600;color:var(--ink-2);line-height:1.2;display:block}
+.chan.off{opacity:.4}.chan .live-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
+.timeline{background:var(--card);border-radius:14px;padding:4px 14px;box-shadow:var(--shadow)}
+.tl-title{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);padding:12px 0 9px}
+.ev{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.ev:last-child{border-bottom:none}
+.ev .ed{width:8px;height:8px;border-radius:50%;background:var(--teal);margin-top:4px;flex:0 0 auto}
+.ev .ed.new{background:var(--green);animation:pulse 1.6s infinite}
+.ev .etxt{flex:1 1 auto}.ev .etxt b{font-size:13px;font-weight:600;letter-spacing:-.01em;display:block}
+.ev .etxt small{font-size:11px;color:var(--ink-3);font-weight:500}
+.src-tag{font-size:10px;font-weight:600;color:var(--ti);background:#EEF3F2;border-radius:10px;padding:3px 8px;flex:0 0 auto;margin-top:1px}
+
+/* S4 gap */
+.profile-chip{display:flex;align-items:center;gap:11px;margin-bottom:15px;background:var(--card);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.pavatar{width:42px;height:42px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff}
+.profile-chip .meta b{display:block;font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.profile-chip .meta small{font-size:12px;color:var(--ink-2);font-weight:500}
+.gapcard{background:var(--abg);border:1px solid var(--aline);border-radius:18px;padding:18px 16px;box-shadow:var(--shadow)}
+.gaphead{display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.flag{width:32px;height:32px;border-radius:9px;flex:0 0 auto;background:var(--amber);display:flex;align-items:center;justify-content:center}
+.flag svg{width:17px;height:17px;color:#fff}
+.gaphead b{font-size:15px;font-weight:700;letter-spacing:-.02em}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.col h4{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+.item{display:flex;gap:7px;align-items:flex-start;margin-bottom:10px;font-size:12px;line-height:1.35}
+.item .b{width:15px;height:15px;border-radius:50%;flex:0 0 auto;margin-top:1px;display:flex;align-items:center;justify-content:center}
+.item .b svg{width:9px;height:9px}
+.item.has .b{background:#E3F0E6}.item.has .b svg{color:var(--green)}
+.item.miss .b{background:#F6E4C6}.item.miss .b svg{color:#C88A2E}
+.item b{font-weight:600;display:block}.item small{color:var(--ink-3);font-weight:500;font-size:11px}
+.why{margin-top:14px;padding-top:13px;border-top:1px solid var(--aline);font-size:12.5px;line-height:1.5;color:var(--ink);display:flex;gap:8px}
+.why svg{width:15px;height:15px;flex:0 0 auto;margin-top:2px;color:#C88A2E}
+.stag{margin-top:11px;display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--aline);border-radius:18px;padding:6px 11px;font-size:11px;font-weight:600;color:var(--ti)}
+.stag svg{width:12px;height:12px}
+
+/* S5 o que fazer */
+.reco-strip{background:var(--card);border-radius:13px;padding:13px 15px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;margin-bottom:20px}
+.reco-strip .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex:0 0 auto}
+.reco-strip b{font-size:13px;font-weight:600;letter-spacing:-.01em}
+.reco-strip small{display:block;font-size:11.5px;color:var(--ink-3);font-weight:500;margin-top:1px}
+.ask{font-size:19px;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.choice{width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px 15px;font-family:var(--font);cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:10px;transition:all .2s;box-shadow:var(--shadow)}
+.choice:hover{transform:translateY(-1px);box-shadow:var(--lift)}
+.choice .cic{width:34px;height:34px;border-radius:9px;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.choice .cic svg{width:17px;height:17px}
+.choice .ctxt b{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em}
+.choice .ctxt small{font-size:11.5px;color:var(--ink-3);font-weight:500}
+.choice.primary{background:var(--teal);border-color:var(--teal)}
+.choice.primary .ctxt b{color:#fff}.choice.primary .ctxt small{color:rgba(255,255,255,.75)}
+.choice.primary .cic{background:rgba(255,255,255,.15)}.choice.primary .cic svg{color:#fff}
+.choice.sec .cic{background:#F0F2F1}.choice.sec .cic svg{color:var(--ti)}
+.choice.tert{box-shadow:none;background:transparent;border-color:transparent;justify-content:center}
+.choice.tert .ctxt b{color:var(--ink-3);font-size:13px}
+.decide-note{font-size:11px;color:var(--ink-3);text-align:center;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:5px}
+.decide-note svg{width:12px;height:12px}
+
+/* S6 marcacao */
+.book-note{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-bottom:14px;display:flex;gap:8px}
+.book-note svg{width:15px;height:15px;flex:0 0 auto;margin-top:2px;color:var(--ti)}
+.sec-h{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin:2px 0 9px}
+.opt{width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px 14px;font-family:var(--font);cursor:pointer;display:flex;gap:12px;align-items:center;margin-bottom:10px;transition:all .2s;box-shadow:var(--shadow)}
+.opt:hover{transform:translateY(-1px);box-shadow:var(--lift)}
+.opt .oav{width:42px;height:42px;border-radius:11px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#EEF3F2;color:var(--ti);font-weight:700;font-size:14px}
+.opt .oav svg{width:19px;height:19px;color:var(--ti)}
+.opt .ot{flex:1 1 auto;min-width:0}
+.opt .ot b{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em}
+.opt .ot small{font-size:11.5px;color:var(--ink-3);font-weight:500;display:block;margin-top:2px}
+.opt .oslot{font-size:11.5px;font-weight:600;color:var(--ti);flex:0 0 auto;text-align:right}
+.opt .oslot small{display:block;font-size:10px;color:var(--ink-3);font-weight:500}
+.opt.prio{border-color:var(--teal);background:linear-gradient(180deg,#F3F8F7,#fff)}
+.pbadge{display:inline-flex;align-items:center;gap:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:18px;margin-bottom:7px}
+.pbadge svg{width:10px;height:10px}
+
+/* S7 iOS notification */
+.screen.lock{padding:0}
+.lock-bg{width:100%;height:100%;background:linear-gradient(160deg,#1a3a3a 0%,#0d2020 50%,#0a1a2e 100%);display:flex;flex-direction:column;align-items:center;padding-top:60px;position:relative}
+.lock-time{font-size:68px;font-weight:200;color:#fff;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+.lock-date{font-size:15px;color:rgba(255,255,255,.7);font-weight:400;margin-bottom:32px;letter-spacing:-.01em}
+.notif-card{background:rgba(255,255,255,.18);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:14px 16px;width:calc(100% - 32px);text-align:left}
+.notif-top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.notif-app-ic{width:30px;height:30px;border-radius:8px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.notif-app-ic svg{width:16px;height:16px}
+.notif-meta{flex:1 1 auto}.notif-meta b{display:block;font-size:12px;font-weight:700;color:#fff;letter-spacing:.01em}
+.notif-meta span{font-size:11px;color:rgba(255,255,255,.6)}
+.notif-title{font-size:14px;font-weight:700;color:#fff;display:block;margin-bottom:5px}
+.notif-body{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.45}
+.lock-swipe{position:absolute;bottom:38px;font-size:13px;color:rgba(255,255,255,.5);font-weight:500;letter-spacing:.02em;display:flex;align-items:center;gap:6px}
+.lock-swipe::before{content:"";width:30px;height:2px;background:rgba(255,255,255,.35);border-radius:2px}
+.lock-swipe::after{content:"";width:30px;height:2px;background:rgba(255,255,255,.35);border-radius:2px}
+.lock-actions{display:flex;gap:10px;margin-top:12px}
+.lock-action{flex:1;background:rgba(255,255,255,.15);border:none;border-radius:10px;padding:9px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.lock-action svg{width:14px;height:14px}
+.next-cta{position:absolute;bottom:90px;width:calc(100% - 44px);background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px);color:#fff;border-radius:14px;padding:13px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.next-cta:hover{background:rgba(255,255,255,.25)}
+
+/* S8 portal */
+.screen.doc{padding:0}
+.doc-head{background:var(--slate);color:#fff;padding:58px 20px 46px;margin-bottom:-30px}
+.doc-head .role{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8FB3AF;display:flex;align-items:center;gap:7px;margin-bottom:12px}
+.doc-head .live-badge{background:rgba(255,255,255,.1);color:#8FE0A0}
+.doc-pat{display:flex;align-items:center;gap:11px}
+.doc-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff}
+.doc-pat b{font-size:17px;font-weight:700;letter-spacing:-.02em;display:block}
+.doc-pat small{font-size:12px;color:#A9C4C1;font-weight:500}
+.doc-body{padding:16px 20px 20px;overflow-y:auto;flex:1 1 auto}
+.doc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;position:relative}
+.dm{background:#fff;border-radius:12px;padding:11px}
+.dm .k{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.dm .v{font-size:18px;font-weight:700;letter-spacing:-.02em;margin-top:4px}
+.dm .v small{font-size:10px;font-weight:600;color:var(--ink-3)}
+.dm .t{font-size:9px;color:var(--green);font-weight:600;margin-top:2px}
+.doc-card{background:#fff;border-radius:15px;padding:14px;box-shadow:var(--shadow);margin-bottom:11px}
+.dc-h{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-bottom:11px;display:flex;justify-content:space-between;align-items:center}
+.flag-row{display:flex;gap:10px;align-items:flex-start;padding:11px;border-radius:11px;background:var(--abg);border:1px solid var(--aline)}
+.flag-row .fi{width:28px;height:28px;border-radius:8px;background:var(--amber);flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.flag-row .fi svg{width:14px;height:14px;color:#fff}
+.flag-row .ft b{font-size:13px;font-weight:600;letter-spacing:-.01em;display:block}
+.flag-row .ft small{font-size:11px;color:var(--ink-2);font-weight:500;line-height:1.4}
+.status-live{margin-top:10px;padding:10px 12px;border-radius:11px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.status-live.done{background:#EAF4EC;color:var(--ti)}
+.status-live.pending{background:#F0F2F1;color:var(--ink-2)}
+.status-live svg{width:15px;height:15px;flex:0 0 auto}
+.status-live .now{margin-left:auto;font-size:10px;color:var(--ink-3);font-weight:500;display:flex;align-items:center;gap:4px}
+.doc-tl .ev b{font-size:13px}.dc-h .live-badge{background:#EAF4EC;color:var(--ti);padding:3px 8px}
+.doc-actions{display:flex;gap:8px}
+.doc-actions button{flex:1;font-family:var(--font);font-size:13px;font-weight:600;padding:12px;border-radius:12px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ti);transition:all .2s}
+.doc-actions button.p{background:var(--teal);color:#fff;border-color:var(--teal)}
+.doc-actions button:hover{transform:translateY(-1px)}
+.doc-wrap{display:flex;flex-direction:column;height:100%}
+
+/* MODALS */
+.modal-ov{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .3s;border-radius:42px}
+.modal-ov.open{opacity:1;pointer-events:auto}
+.modal-sheet{background:#fff;border-radius:26px 26px 0 0;padding:16px 20px 34px;width:100%}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:#D9DBD8;margin:0 auto 18px}
+.modal-sheet h3{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.modal-sheet p{font-size:13px;color:var(--ink-2);margin-bottom:16px}
+.ch-btn{width:100%;display:flex;align-items:center;gap:13px;padding:14px 15px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font-family:var(--font);font-size:15px;font-weight:600;cursor:pointer;margin-bottom:10px;transition:all .2s;text-align:left}
+.ch-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.ch-btn .ch-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ch-btn.wa .ch-ic{background:#E8F5E9}.ch-btn.wa .ch-ic svg{color:#25D366}
+.ch-btn.em .ch-ic{background:#E3F0FB}.ch-btn.em .ch-ic svg{color:#3B82F6}
+.ch-btn .ch-t{display:flex;flex-direction:column;gap:1px}
+.ch-btn .ch-t b{font-size:15px;font-weight:700}
+.ch-btn .ch-t small{font-size:12px;color:var(--ink-3);font-weight:500}
+.ch-btn.cancel{justify-content:center;border-color:transparent;color:var(--ink-3);font-size:14px;margin-bottom:0}
+.ch-btn.cancel:hover{transform:none;box-shadow:none;background:#F7F7F5}
+/* compose modal */
+.compose-modal{position:absolute;inset:0;z-index:101;display:flex;flex-direction:column;border-radius:42px;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(30px);transition:opacity .3s,transform .3s}
+.compose-modal.open{opacity:1;pointer-events:auto;transform:none}
+.compose-head{padding:52px 16px 12px;display:flex;align-items:center;gap:10px}
+.compose-head.wa-h{background:var(--wa)}
+.compose-head.em-h{background:#3B82F6}
+.compose-head .back{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.compose-head .back svg{width:16px;height:16px;color:#fff}
+.compose-head .ch-info b{display:block;font-size:15px;font-weight:700;color:#fff}
+.compose-head .ch-info small{font-size:11.5px;color:rgba(255,255,255,.7)}
+.compose-body{flex:1 1 auto;padding:16px;overflow-y:auto}
+.compose-body.wa-body{background:#ECE5DD}
+.compose-body.em-body{background:#F7F7F5}
+.wa-bubble{background:#fff;border-radius:4px 16px 16px 16px;padding:10px 12px;max-width:90%;box-shadow:0 1px 2px rgba(0,0,0,.1);margin-bottom:4px}
+.wa-bubble p{font-size:13.5px;line-height:1.5;color:#1E2422}
+.wa-bubble .wa-meta{font-size:10px;color:var(--ink-3);text-align:right;margin-top:4px}
+.em-fields{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:12px}
+.em-row{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.em-row:last-child{border-bottom:none}
+.em-row label{font-size:12px;font-weight:600;color:var(--ink-3);width:50px;flex:0 0 auto}
+.em-row span{font-size:12.5px;color:var(--ink)}
+.em-body-txt{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);font-size:13px;color:var(--ink);line-height:1.55}
+.compose-footer{padding:10px 14px 28px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.compose-footer.wa-f{background:var(--wa)}
+.compose-footer.em-f{background:#fff}
+.compose-input{flex:1 1 auto;background:rgba(255,255,255,.15);border:none;border-radius:20px;padding:10px 14px;font-family:var(--font);font-size:13.5px;color:#fff;resize:none;height:40px;line-height:1.4}
+.compose-input::placeholder{color:rgba(255,255,255,.5)}
+.compose-input.em-in{background:#F0F2F1;color:var(--ink)}.compose-input.em-in::placeholder{color:var(--ink-3)}
+.send-btn{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto;transition:all .2s}
+.send-btn.wa-s{background:#25D366}.send-btn.em-s{background:#3B82F6}
+.send-btn svg{width:18px;height:18px;color:#fff}
+.sent-msg{text-align:center;padding:20px;color:rgba(255,255,255,.7);font-size:13.5px}
+.sent-msg.em-sm{color:var(--green)}
+.sent-check{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.sent-check svg{width:24px;height:24px;color:#fff}
+
+/* controls */
+.controls{display:flex;gap:10px;align-items:center}
+.controls button{font-family:var(--font);font-size:13px;font-weight:600;border:1px solid #D9DBD8;background:#fff;color:var(--ink-2);padding:9px 17px;border-radius:22px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.controls button:hover{border-color:var(--teal);color:var(--ti)}
+.controls button svg{width:13px;height:13px}
+.caption{font-size:11.5px;color:#8A908C;text-align:center;max-width:380px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="phone"><div class="sw">
+  <div class="notch"></div>
+  <div class="sb" id="sb"><span id="clock">9:41</span><div class="bars"><div class="bar" style="height:7px"></div><div class="bar" style="height:10px"></div><div class="bar" style="height:13px"></div><div class="bar" style="height:9px;opacity:.35"></div></div></div>
+  <div class="screens">
+
+    <!-- S0 SELECIONAR PERFIL -->
+    <section class="screen active" data-i="0">
+      <div class="prof-head">
+        <div class="wp-hero"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div>
+        <h1>Quem és tu?</h1>
+        <p class="sub">Escolhe o teu perfil. Vemos como o Wellpath adapta a jornada em função da tua situação de saúde.</p>
+      </div>
+      <div class="prof-grid">
+        <div class="pcard" onclick="selectProfile('maria')">
+          <div class="pav" style="background:#5E9B99">M</div>
+          <div class="pinfo"><b>Maria Santos</b><span class="ptag">58 anos · Diabetes tipo 2</span><p>Seguida no SNS há 6 anos. Toma metformina. Última HbA1c: 7,1%.</p></div>
+        </div>
+        <div class="pcard" onclick="selectProfile('joao')">
+          <div class="pav" style="background:#5E7B9A">J</div>
+          <div class="pinfo"><b>João Ferreira</b><span class="ptag">34 anos · Sem patologia crónica</span><p>Trabalhador sedentário, fumador social. Sem check-up há 2 anos.</p></div>
+        </div>
+        <div class="pcard" onclick="selectProfile('ana')">
+          <div class="pav" style="background:#9B7B5E">A</div>
+          <div class="pinfo"><b>Ana Carvalho</b><span class="ptag">72 anos · Hipertensão + colesterol</span><p>Polimedicada (3 fármacos). Sem densitometria óssea desde 2021.</p></div>
+        </div>
+        <div class="pcard" onclick="selectProfile('lucas')">
+          <div class="pav" style="background:#5E7B9B">L</div>
+          <div class="pinfo"><b>Lucas Rodrigues</b><span class="ptag">9 anos · Vacina em atraso</span><p>Saudável. Faltou à última consulta de vigilância pediátrica.</p></div>
+        </div>
+        <div class="pcard" onclick="selectProfile('sofia')">
+          <div class="pav" style="background:#7B5E9B">S</div>
+          <div class="pinfo"><b>Sofia Mendes</b><span class="ptag">45 anos · Histórico familiar oncológico</span><p>Mãe com cancro da mama (52 anos). Elegível para rastreio anual desde os 40.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S1 REGISTO E PRIVACIDADE -->
+    <section class="screen" data-i="1">
+      <div class="hero-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div>
+      <h1 id="s1-title">Bem-vinda ao Wellpath</h1>
+      <p class="sub">O teu histórico de saúde, reunido num só lugar. Primeiro, o essencial — e a tua privacidade.</p>
+      <div class="field"><label>Nome</label><div class="val" id="s1-name">Maria Santos</div></div>
+      <div class="field"><label>Número de utente</label><div class="val dim">•••• •••• 4821</div></div>
+      <div class="consent">
+        <div class="crow"><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div><div class="ct"><b>Reunir o meu histórico</b><small>Autorizo o Wellpath a ligar-se às minhas fontes de saúde</small></div><div class="toggle" onclick="this.classList.toggle('off')"></div></div>
+        <div class="crow"><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12l2 2 4-4"/></svg></div><div class="ct"><b>Receber recomendações preventivas</b><small>Lembretes, nunca aconselhamento clínico</small></div><div class="toggle" onclick="this.classList.toggle('off')"></div></div>
+      </div>
+      <div class="rgpd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg>Dados tratados ao abrigo do RGPD. Podes revogar a qualquer momento.</div>
+      <div class="grow"></div>
+      <button class="cta" onclick="go(2)">Criar conta e continuar</button>
+      <div class="steps"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <!-- S2 FONTES DE DADOS -->
+    <section class="screen" data-i="2">
+      <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div><div><b>Fontes de dados</b><br><span>o que o Wellpath vai reunir</span></div></div>
+      <h1>As tuas fontes de saúde</h1>
+      <p class="sub">Ligamos-nos às entidades que autorizaste. Controla cada ligação a qualquer momento.</p>
+      <!-- SNS -->
+      <div class="src-card on" id="src-sns" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m4 0h1M9 13h1m4 0h1"/></svg></div>
+        <div class="src-meta"><b>Serviço Nacional de Saúde</b><small>Consultas, diagnósticos, análises</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-sns"><span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado</div><button class="src-btn dis" onclick="toggleSrc('sns')">Desligar</button></div>
+      </div>
+      <!-- Farmácia -->
+      <div class="src-card on" id="src-farm" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v6m0 0l3-3m-3 3L9 5M6 12h12l-1.5 8a2 2 0 01-2 1.7H9.5a2 2 0 01-2-1.7L6 12z"/></svg></div>
+        <div class="src-meta"><b>Farmácia Central</b><small>Medicação e renovações</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-farm"><span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado</div><button class="src-btn dis" onclick="toggleSrc('farm')">Desligar</button></div>
+      </div>
+      <!-- Wearable -->
+      <div class="src-card on" id="src-wear" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 7l.5-3h5l.5 3M9 17l.5 3h5l.5-3"/></svg></div>
+        <div class="src-meta"><b>Wearable</b><small>Smartwatch e sensor de glicose · contínuo</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-wear"><span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo</div><button class="src-btn dis" onclick="toggleSrc('wear')">Desligar</button></div>
+      </div>
+      <!-- Hospital -->
+      <div class="src-card on" id="src-hosp" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg></div>
+        <div class="src-meta"><b>Hospital</b><small>Episódios, urgências e cirurgias</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-hosp"><span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado</div><button class="src-btn dis" onclick="toggleSrc('hosp')">Desligar</button></div>
+      </div>
+      <!-- Seguradora -->
+      <div class="src-card on" id="src-seg" data-on="1">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg></div>
+        <div class="src-meta"><b>Seguradora</b><small>Exames e consultas convencionadas</small></div>
+        <div class="src-right"><div class="src-state on-s" id="st-seg"><span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado</div><button class="src-btn dis" onclick="toggleSrc('seg')">Desligar</button></div>
+      </div>
+      <!-- Clínica -->
+      <div class="src-card" id="src-clin" data-on="0">
+        <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="src-meta"><b id="clin-name">Clínica Oftalmológica</b><small id="clin-sub">Ainda não ligada</small></div>
+        <div class="src-right"><div class="src-state off-s" id="st-clin">Desligado</div><button class="src-btn" onclick="toggleSrc('clin')">Ligar</button></div>
+      </div>
+      <div class="synced"><span class="pulse-dot" style="background:var(--green)"></span>A sincronizar histórico em tempo real</div>
+      <div class="grow"></div>
+      <button class="cta" onclick="go(3)">Ver o meu corpo</button>
+      <div class="steps"><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <!-- S3 O MEU CORPO EM TEMPO REAL -->
+    <section class="screen" data-i="3">
+      <div class="live-head"><b>O meu corpo</b><span class="live-badge" id="body-live"><span class="pulse-dot" style="background:var(--green)"></span>Ao vivo</span></div>
+      <div class="bodymap">
+        <svg class="fig" viewBox="0 0 120 250" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="26" r="18"/><path d="M52 44 h16 v6 c14 3 22 14 22 30 v34 c0 6-4 9-9 9 l-2-30 -1 42 c0 2-1 32-2 46 c-1 8-11 8-12 0 l-4-34 -4 34 c-1 8-11 8-12 0 c-1-14-2-44-2-46 l-1-42 -2 30 c-5 0-9-3-9-9 v-34 c0-16 8-27 22-30 z"/></svg>
+        <div class="anchor an-hr"></div>
+        <div class="vchip cn-hr"><span class="beat-dot"></span><div class="vt"><b id="chip-hr">72<small> bpm</small></b><span id="chip-hr-l">Ritmo · Wearable</span></div></div>
+        <div class="anchor an-gl"></div>
+        <div class="vchip cn-gl"><div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3c4 5 6 8 6 11a6 6 0 01-12 0c0-3 2-6 6-11z"/></svg></div><div class="vt"><b id="chip-mid">126<small> mg/dL</small></b><span id="chip-mid-l">Glicemia · Sensor</span></div></div>
+        <div class="anchor an-st"></div>
+        <div class="vchip cn-st"><div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 20l3-9 4 2 2-7M18 4l1 3"/></svg></div><div class="vt"><b id="chip-steps">5 240<small> passos</small></b><span id="chip-steps-l">Hoje · Wearable</span></div></div>
+      </div>
+      <div class="omni-label"><b>Jornada omnicanal</b><span id="chan-count">5 de 6 canais ligados</span></div>
+      <div class="rail">
+        <div class="chan" id="chan-wear"><span class="live-dot"></span><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="7" width="12" height="10" rx="3"/><path d="M9 7l.5-3h5l.5 3M9 17l.5 3h5l.5-3"/></svg></div><small>Wearable</small></div>
+        <div class="chan" id="chan-farm"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v6m0 0l3-3m-3 3L9 5M6 12h12l-1.5 8a2 2 0 01-2 1.7H9.5a2 2 0 01-2-1.7L6 12z"/></svg></div><small>Farmácia</small></div>
+        <div class="chan" id="chan-sns"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div><small>SNS</small></div>
+        <div class="chan" id="chan-hosp"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg></div><small>Hospital</small></div>
+        <div class="chan" id="chan-seg"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg></div><small>Seguradora</small></div>
+        <div class="chan off" id="chan-clin"><div class="chi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><small>Clínica</small></div>
+      </div>
+      <div class="timeline">
+        <div class="tl-title">Histórico omnicanal — um só fio</div>
+        <div id="tl-list"></div>
+      </div>
+      <div class="grow"></div>
+      <button class="cta" onclick="go(4)">Continuar</button>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <!-- S4 RECOMENDAÇÃO -->
+    <section class="screen" data-i="4">
+      <div class="profile-chip"><div class="pavatar" id="s4-av" style="background:#5E9B99">M</div><div class="meta"><b id="s4-name">Maria, 58</b><small id="s4-cond">Diabetes tipo 2 · seguida no SNS</small></div></div>
+      <div class="gapcard">
+        <div class="gaphead"><div class="flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 21V4M4 4l7 2 9-2v10l-9 2-7-2"/></svg></div><b id="gap-title">Falta um rastreio importante</b></div>
+        <div class="cols">
+          <div class="col"><h4>No teu histórico</h4><div id="has-list">
+            <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Diabetes tipo 2</b><small>SNS</small></span></div>
+            <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>HbA1c 7,1%</b><small>Jan 2026 · SNS</small></span></div>
+            <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Metformina</b><small>Farmácia Central</small></span></div>
+          </div></div>
+          <div class="col"><h4>Em falta</h4><div class="item miss"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/></svg></span><span><b id="miss-item">Exame oftalmológico de rastreio</b><small id="miss-time">há 26 meses</small></span></div></div>
+        </div>
+        <div class="why"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01" stroke-linecap="round"/></svg><span id="gap-reason">Porque tens diabetes, é recomendado um exame oftalmológico anual. A retinopatia não dá sintomas até fases avançadas.</span></div>
+        <div class="stag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 12h8M8 12l3-3M8 12l3 3"/><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg><span id="gap-cross">Detetado ao cruzar SNS + Farmácia</span></div>
+      </div>
+      <div class="grow"></div>
+      <button class="cta" onclick="go(5)">Ver o que fazer</button>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i></div>
+    </section>
+
+    <!-- S5 O QUE FAZER -->
+    <section class="screen" data-i="5">
+      <div class="reco-strip"><span class="dot"></span><div><b id="s5-title">Exame oftalmológico de rastreio</b><small id="s5-sub">Em falta há 26 meses</small></div></div>
+      <div class="ask">O que queres fazer?</div>
+      <button class="choice primary" onclick="go(6)"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M9 14l2 2 4-4"/></svg></span><span class="ctxt"><b>Marcar exame</b><small>Ver opções perto de ti</small></span></button>
+      <button class="choice sec" onclick="go(8,'feito')"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ctxt"><b>Já fiz este exame noutro sítio</b><small>Remove a sinalização</small></span></button>
+      <button class="choice tert" onclick="go(8,'lembrar')"><span class="ctxt"><b>Lembrar-me mais tarde</b></span></button>
+      <div class="grow"></div>
+      <div class="decide-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12l2 2 4-4"/></svg>Tu decides sempre. O Wellpath apenas sinaliza.</div>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i></div>
+    </section>
+
+    <!-- S6 MARCAÇÃO -->
+    <section class="screen" data-i="6">
+      <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div><div><b>Marcar exame</b><br><span id="s6-spec">Rastreio oftalmológico</span></div></div>
+      <div class="book-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-6 0V5a3 3 0 013-3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>Priorizámos quem já te acompanhou. O teu histórico segue contigo — não precisas de repetir nada.</span></div>
+      <div class="sec-h">Continuidade de cuidados</div>
+      <button class="opt prio" id="prio-opt" onclick="bookDoc('prio')">
+        <div class="oav" id="doc-av">HM</div>
+        <div class="ot"><div class="pbadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Já te acompanhou</div><b id="doc-name">Dra. Helena Marques</b><small id="doc-spec">Oftalmologia · Centro Clínico do Porto · 3,2 km</small></div>
+        <div class="oslot"><span id="doc-date">12 mai</span><small id="doc-time">09:30</small></div>
+      </button>
+      <div class="sec-h">Outras opções perto de ti</div>
+      <div id="other-opts">
+        <button class="opt" onclick="bookDoc('h1')"><div class="oav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg></div><div class="ot"><b id="o1-name">Hospital da Luz — Porto</b><small id="o1-spec">Oftalmologia · 5,1 km</small></div><div class="oslot"><span id="o1-date">9 mai</span><small id="o1-time">08:15</small></div></button>
+        <button class="opt" onclick="bookDoc('h2')"><div class="oav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="ot"><b id="o2-name">Clínica Lusíadas</b><small id="o2-spec">Oftalmologia · 4,4 km</small></div><div class="oslot"><span id="o2-date">14 mai</span><small id="o2-time">16:00</small></div></button>
+        <button class="opt" onclick="bookDoc('h3')"><div class="oav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div><div class="ot"><b id="o3-name">Centro de Saúde — SNS</b><small id="o3-spec">Referenciação · 1,8 km</small></div><div class="oslot"><span id="o3-date">via médico</span><small id="o3-time">de família</small></div></button>
+      </div>
+      <div class="grow"></div>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i></div>
+    </section>
+
+    <!-- S7 NOTIFICAÇÃO iOS -->
+    <section class="screen lock" data-i="7">
+      <div class="lock-bg">
+        <div class="lock-time" id="lock-time">15:41</div>
+        <div class="lock-date">Terça-feira, 8 de julho</div>
+        <div class="notif-card">
+          <div class="notif-top">
+            <div class="notif-app-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div>
+            <div class="notif-meta"><b>Wellpath</b><span>agora</span></div>
+          </div>
+          <span class="notif-title">✓ Consulta confirmada</span>
+          <p class="notif-body" id="notif-body">Dra. Helena Marques — 12 mai às 09:30 · Centro Clínico do Porto</p>
+          <div class="lock-actions">
+            <button class="lock-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>Ver detalhes</button>
+            <button class="lock-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>Ligar</button>
+          </div>
+        </div>
+        <div class="lock-swipe">Desliza para abrir</div>
+      </div>
+    </section>
+
+    <!-- S8 PORTAL DO PROFISSIONAL -->
+    <section class="screen doc" data-i="8">
+      <div class="doc-wrap">
+        <div class="doc-head">
+          <div class="role"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-6 0V5a3 3 0 013-3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>Portal do profissional<span class="live-badge" style="background:rgba(255,255,255,.1);color:#8FE0A0"><span class="pulse-dot" style="background:#8FE0A0"></span>Live data</span></div>
+          <div class="doc-pat"><div class="doc-av" id="doc-pat-av" style="background:#5E9B99">M</div><div><b id="doc-pat-name">Maria Santos, 58</b><small id="doc-pat-cond">Diabetes tipo 2 · utente #4821</small></div></div>
+        </div>
+        <div class="doc-body">
+          <div class="doc-metrics">
+            <div class="dm"><div class="k" id="dm1-k">HbA1c</div><div class="v" id="dm1-v">7,1<small>%</small></div><div class="t">estável</div></div>
+            <div class="dm"><div class="k">Glicemia</div><div class="v" id="gluc2">126</div><div class="t" id="gluc2-t">há 4 s</div></div>
+            <div class="dm"><div class="k" id="dm3-k">Adesão</div><div class="v" id="dm3-v">94<small>%</small></div><div class="t">boa</div></div>
+          </div>
+          <div class="doc-card">
+            <div class="dc-h"><span>Sinalização preventiva</span></div>
+            <div class="flag-row"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 21V4M4 4l7 2 9-2v10l-9 2-7-2"/></svg></div><div class="ft"><b id="doc-gap-title">Rastreio oftalmológico em atraso</b><small id="doc-gap-sub">Último registo há 26 meses · recomendado anual em diabéticos</small></div></div>
+            <div class="status-live pending" id="doc-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg><span id="doc-status-txt">A aguardar ação do utente</span><span class="now"><span class="live-badge" style="padding:2px 6px;font-size:9px"><span class="pulse-dot" style="background:var(--green);width:5px;height:5px"></span></span>agora</span></div>
+          </div>
+          <div class="doc-card doc-tl">
+            <div class="dc-h"><span>Histórico omnicanal</span><span class="live-badge" style="background:#EAF4EC;color:var(--ti);padding:3px 8px;font-size:9px"><span class="pulse-dot" style="background:var(--green);width:5px;height:5px"></span>atualizado agora</span></div>
+            <div class="ev"><span class="ed new"></span><div class="etxt"><b id="ptl1">Sinais vitais — ritmo e glicemia</b><small>agora mesmo</small></div><span class="src-tag">Wearable</span></div>
+            <div class="ev"><span class="ed"></span><div class="etxt"><b id="ptl2">Metformina renovada</b><small id="ptl2t">ontem</small></div><span class="src-tag" id="ptl2s">Farmácia</span></div>
+            <div class="ev"><span class="ed"></span><div class="etxt"><b id="ptl3">Análises — HbA1c 7,1%</b><small id="ptl3t">Jan 2026</small></div><span class="src-tag" id="ptl3s">SNS</span></div>
+            <div class="ev"><span class="ed"></span><div class="etxt"><b id="ptl4">Rastreio oftalmológico</b><small id="ptl4t">há 26 meses</small></div><span class="src-tag" id="ptl4s">Clínica</span></div>
+          </div>
+          <div class="doc-actions">
+            <button onclick="openContact()">Contactar utente</button>
+            <button class="p" onclick="validateFlag()">Validar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /screens -->
+
+  <!-- MODAL: channel picker -->
+  <div class="modal-ov" id="modal-contact">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3>Contactar <span id="contact-name">Maria Santos</span></h3>
+      <p>Escolhe o canal. A mensagem é preparada automaticamente a partir da sinalização.</p>
+      <button class="ch-btn wa" onclick="openChannel('whatsapp')">
+        <div class="ch-ic"><svg viewBox="0 0 24 24" fill="currentColor" style="color:#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.123 1.527 5.856L.057 23.882l6.19-1.62A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.37l-.359-.213-3.722.976.993-3.624-.234-.373A9.818 9.818 0 1112 21.818z"/></svg></div>
+        <span class="ch-t"><b>WhatsApp</b><small id="contact-wa-detail">+351 91• ••• •21</small></span>
+      </button>
+      <button class="ch-btn em" onclick="openChannel('email')">
+        <div class="ch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#3B82F6"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <span class="ch-t"><b>E-mail</b><small id="contact-em-detail">maria.santos@mail.pt</small></span>
+      </button>
+      <button class="ch-btn cancel" onclick="closeModal('modal-contact')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- MODAL: compose -->
+  <div class="compose-modal" id="modal-compose">
+    <!-- filled dynamically -->
+  </div>
+
+</div></div><!-- /sw /phone -->
+
+<div class="controls">
+  <button onclick="restart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8M3 3v5h5"/></svg>Recomeçar</button>
+  <button onclick="prev()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Anterior</button>
+  <button id="portal-btn" style="display:none;border-color:var(--teal);color:var(--ti);font-weight:700" onclick="go(8,'marcar')">Continuar para o portal do profissional →</button>
+</div>
+<p class="caption">Wellpath · protótipo de demonstração · dados sintéticos · recomendações preventivas, nunca prescritivas</p>
+</div><!-- /stage -->
+
+<script>
+const PROFILES={
+  maria:{id:'maria',name:'Maria Santos',age:58,initials:'M',color:'#5E9B99',
+    cond:'Diabetes tipo 2',condLong:'Diabetes tipo 2 · seguida no SNS',
+    title1:'Bem-vinda ao Wellpath',
+    chips:{hr:'72',mid:'126',midU:' mg/dL',midL:'Glicemia · Sensor',steps:'5 240'},
+    tl:[['Ritmo cardíaco e glicemia','agora mesmo','Wearable'],['Metformina renovada','ontem','Farmácia'],['Consulta de diabetologia','há 3 meses','SNS'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Vacina da gripe','Out 2025','Farmácia'],['Rastreio oftalmológico','mai 2024','Clínica'],['Diagnóstico — Diabetes tipo 2','2020','SNS']],
+    gapTitle:'Falta um rastreio importante',
+    has:[['Diabetes tipo 2','SNS'],['HbA1c 7,1%','Jan 2026 · SNS'],['Metformina','Farmácia Central']],
+    miss:'Exame oftalmológico de rastreio',missT:'há 26 meses',
+    reason:'Porque tens diabetes, é recomendado um exame oftalmológico anual. A retinopatia não dá sintomas até fases avançadas.',
+    cross:'SNS + Farmácia',
+    s5title:'Exame oftalmológico de rastreio',s5sub:'Em falta há 26 meses',
+    s6spec:'Rastreio oftalmológico',
+    doc:{av:'HM',name:'Dra. Helena Marques',spec:'Oftalmologia · Centro Clínico do Porto · 3,2 km',date:'12 mai',time:'09:30'},
+    others:[{av:'🏥',name:'Hospital da Luz — Porto',spec:'Oftalmologia · 5,1 km',date:'9 mai',time:'08:15'},{av:'👁',name:'Clínica Lusíadas',spec:'Oftalmologia · 4,4 km',date:'14 mai',time:'16:00'},{av:'🏛',name:'Centro de Saúde — SNS',spec:'Referenciação · 1,8 km',date:'via médico',time:'de família'}],
+    notif:'Dra. Helena Marques — 12 mai às 09:30 · Centro Clínico do Porto',
+    phone:'+351 91• ••• •21',email:'maria.santos@mail.pt',
+    mailSubj:'rastreio oftalmológico recomendado',
+    contactMsg:'Olá Maria, fala-lhe a sua equipa de saúde através do Wellpath. Verificámos que o rastreio oftalmológico está em atraso (recomendado anual em diabéticos). Podemos ajudar a agendar — responda quando lhe for conveniente.',
+    portal:{dm1k:'HbA1c',dm1v:'7,1%',dm3k:'Adesão',dm3v:'94%',
+      gapTitle:'Rastreio oftalmológico em atraso',gapSub:'Último registo há 26 meses · recomendado anual em diabéticos',
+      tl:[['Sinais vitais — ritmo e glicemia','agora mesmo','Wearable'],['Metformina renovada','ontem','Farmácia'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Rastreio oftalmológico','há 26 meses','Clínica']]}
+  },
+  joao:{id:'joao',name:'João Ferreira',age:34,initials:'J',color:'#5E7B9A',
+    cond:'Sem patologia crónica',condLong:'Adulto saudável · sem check-up há 2 anos',
+    title1:'Bem-vindo ao Wellpath',
+    chips:{hr:'78',mid:'27,4',midU:' IMC',midL:'Índice · Estimado',steps:'3 210'},
+    tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['Ibuprofeno — compra pontual','há 6 meses','Farmácia'],['Urgência — entorse do tornozelo','2024','Hospital'],['Análises de rotina','2023','SNS'],['Consulta medicina geral','2023','SNS'],['Vacina Tdap','2022','SNS']],
+    gapTitle:'Rastreio preventivo em atraso',
+    has:[['Vacinação em dia','SNS'],['Análises de rotina','2023 · SNS']],
+    miss:'Check-up anual + espirometria',missT:'há 2 anos',
+    reason:'Adultos com exposição tabágica têm indicação de espirometria periódica. O check-up anual permite detetar fatores de risco precocemente.',
+    cross:'SNS',
+    s5title:'Check-up anual + espirometria',s5sub:'Em falta há 2 anos',
+    s6spec:'Check-up e medicina interna',
+    doc:{av:'AL',name:'Dr. António Lopes',spec:'Medicina Interna · Clínica CUF Porto · 2,1 km',date:'8 mai',time:'10:00'},
+    others:[{av:'🏥',name:'Hospital CUF Porto',spec:'Medicina Interna · 2,1 km',date:'8 mai',time:'10:00'},{av:'🏛',name:'Centro de Saúde — SNS',spec:'Medicina geral · 1,2 km',date:'10 mai',time:'09:00'},{av:'👁',name:'Clínica Lusíadas',spec:'Check-up executivo · 3,8 km',date:'12 mai',time:'11:30'}],
+    notif:'Check-up confirmado — Dr. António Lopes, 8 mai às 10:00 · CUF Porto',
+    phone:'+351 93• ••• •02',email:'joao.ferreira@mail.pt',
+    mailSubj:'check-up anual recomendado',
+    contactMsg:'Olá João, fala-lhe a sua equipa de saúde através do Wellpath. O check-up anual e a espirometria estão em atraso há 2 anos. Podemos ajudar a agendar — responda quando lhe for conveniente.',
+    portal:{dm1k:'Freq. card.',dm1v:'78bpm',dm3k:'Passos',dm3v:'3 210',
+      gapTitle:'Check-up e espirometria em atraso',gapSub:'Sem consulta há 2 anos · exposição tabágica registada',
+      tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['Análises de rotina','2023','SNS'],['Consulta medicina geral','2023','SNS'],['Vacina Tdap','2022','SNS']]}
+  },
+  ana:{id:'ana',name:'Ana Carvalho',age:72,initials:'A',color:'#9B7B5E',
+    cond:'Hipertensão + colesterol alto',condLong:'Hipertensão · polimedicada · 3 fármacos',
+    title1:'Bem-vinda ao Wellpath',
+    chips:{hr:'128/82',mid:'91',midU:'%',midL:'Adesão · Farmácia',steps:'1 840'},
+    tl:[['Tensão arterial e atividade','agora mesmo','Wearable'],['Estatina renovada','ontem','Farmácia'],['Anti-hipertensor renovado','há 2 semanas','Farmácia'],['Consulta medicina geral','há 1 mês','SNS'],['Análises — colesterol LDL','Mar 2026','SNS'],['Densitometria óssea','2021','Hospital'],['Hipertensão diagnosticada','2018','SNS']],
+    gapTitle:'Rastreio de osteoporose em atraso',
+    has:[['Hipertensão controlada','SNS'],['Estatina renovada','Farmácia'],['TA 128/82','Wearable']],
+    miss:'Densitometria óssea (DXA)',missT:'há 3 anos',
+    reason:'Mulheres acima dos 65 anos com fatores de risco têm indicação de densitometria bienal. O diagnóstico precoce previne fraturas.',
+    cross:'SNS + Farmácia',
+    s5title:'Densitometria óssea (DXA)',s5sub:'Em falta há 3 anos',
+    s6spec:'Reumatologia / Densitometria',
+    doc:{av:'MS',name:'Dra. Margarida Sousa',spec:'Reumatologia · Hospital de São João · 4,8 km',date:'15 mai',time:'14:30'},
+    others:[{av:'🏥',name:'Hospital da Luz — Porto',spec:'Reumatologia · 5,2 km',date:'17 mai',time:'10:00'},{av:'🏥',name:'H. Santo António',spec:'Reumatologia · 3,1 km',date:'20 mai',time:'09:00'},{av:'🏛',name:'Centro de Saúde — SNS',spec:'Referenciação médico família',date:'via médico',time:'de família'}],
+    notif:'Densitometria confirmada — Dra. Margarida Sousa, 15 mai às 14:30 · H. São João',
+    phone:'+351 96• ••• •47',email:'ana.carvalho@mail.pt',
+    mailSubj:'densitometria óssea recomendada',
+    contactMsg:'Olá Ana, fala-lhe a sua equipa de saúde através do Wellpath. A densitometria óssea está em atraso há 3 anos (recomendada bienal acima dos 65 anos). Podemos ajudar a agendar — responda quando lhe for conveniente.',
+    portal:{dm1k:'Tensão art.',dm1v:'128/82',dm3k:'Adesão',dm3v:'91%',
+      gapTitle:'Densitometria óssea em atraso',gapSub:'Última DXA há 3 anos · mulher >65 com fatores de risco',
+      tl:[['Tensão arterial e atividade','agora mesmo','Wearable'],['Estatina renovada','ontem','Farmácia'],['Consulta medicina geral','há 1 mês','SNS'],['Densitometria DXA','há 3 anos','Hospital']]}
+  },
+  lucas:{id:'lucas',name:'Lucas Rodrigues',age:9,initials:'L',color:'#5E7B9B',
+    cond:'Vacina em atraso',condLong:'Saudável · vacinação incompleta',
+    title1:'Bem-vindo ao Wellpath',
+    chips:{hr:'88',mid:'32',midU:' kg',midL:'Peso · SNS',steps:'8 420'},
+    tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['Vacina da gripe pediátrica','Nov 2025','SNS'],['Xarope para a tosse — prescrição','há 8 meses','Farmácia'],['Crescimento normal confirmado','2024','SNS'],['Consulta vigilância','2023','SNS'],['1.ª dose VASPR','2019','SNS']],
+    gapTitle:'Vacina em atraso',
+    has:[['1.ª dose VASPR','2019 · SNS'],['Crescimento normal','SNS'],['Sem alergias','SNS']],
+    miss:'Vacina VASPR — 2.ª dose',missT:'há 14 meses',
+    reason:'A 2.ª dose da vacina VASPR está prevista para os 5–6 anos. O atraso aumenta o risco de surto em contexto escolar.',
+    cross:'SNS',
+    s5title:'Vacina VASPR — 2.ª dose',s5sub:'Em atraso há 14 meses',
+    s6spec:'Pediatria / Vacinação',
+    doc:{av:'FC',name:'Dra. Filipa Costa',spec:'Pediatria · Centro de Saúde de Paranhos · 1,4 km',date:'7 mai',time:'09:15'},
+    others:[{av:'🏥',name:'Hospital Pediátrico — Porto',spec:'Pediatria · 3,6 km',date:'9 mai',time:'11:00'},{av:'🏛',name:'CS Ramalde',spec:'Vacinação · 2,2 km',date:'8 mai',time:'10:30'},{av:'👁',name:'Clínica Pediátrica CUF',spec:'Pediatria · 2,8 km',date:'10 mai',time:'14:00'}],
+    notif:'Vacinação VASPR confirmada — Dra. Filipa Costa, 7 mai às 09:15 · CS Paranhos',
+    phone:'+351 91• ••• •88',email:'lucas.rodrigues@mail.pt',
+    mailSubj:'vacina VASPR — 2.ª dose em atraso',
+    contactMsg:'Olá, fala-lhe a equipa de saúde do Lucas através do Wellpath. A 2.ª dose da vacina VASPR está em atraso há 14 meses. Podemos ajudar a agendar a vacinação — responda quando lhe for conveniente.',
+    portal:{dm1k:'Freq. card.',dm1v:'88bpm',dm3k:'Passos',dm3v:'8 420',
+      gapTitle:'Vacina VASPR 2.ª dose em atraso',gapSub:'Prevista para os 5–6 anos · em falta há 14 meses',
+      tl:[['Freq. cardíaca e atividade','agora mesmo','Wearable'],['1.ª dose VASPR','2019','SNS'],['Consulta vigilância','2024','SNS'],['Crescimento normal','2024','SNS']]}
+  },
+  sofia:{id:'sofia',name:'Sofia Mendes',age:45,initials:'S',color:'#7B5E9B',
+    cond:'Histórico familiar oncológico',condLong:'Pré-menopausa · histórico familiar cancro mama',
+    title1:'Bem-vinda ao Wellpath',
+    chips:{hr:'71',mid:'98',midU:'%',midL:'SpO₂ · Wearable',steps:'6 100'},
+    tl:[['Freq. cardíaca e SpO₂','agora mesmo','Wearable'],['Contracetivo renovado','há 1 semana','Farmácia'],['Check-up do seguro','Fev 2026','Seguradora'],['Exame ginecológico','2024','Seguradora'],['Mamografia bilateral','2024','Clínica'],['Ecografia pélvica','2023','Clínica'],['Consulta medicina geral','2024','SNS']],
+    gapTitle:'Mamografia de rastreio em atraso',
+    has:[['Exame ginecológico','2024 · Seguradora'],['Ecografia pélvica','2023 · Clínica'],['Sem patologia crónica','SNS']],
+    miss:'Mamografia bilateral',missT:'há 2 anos',
+    reason:'Com histórico familiar de 1.º grau, o rastreio mamário é recomendado anualmente a partir dos 40 anos. Deteção precoce é curável em >90% dos casos.',
+    cross:'SNS + Seguradora',
+    s5title:'Mamografia bilateral',s5sub:'Em falta há 2 anos',
+    s6spec:'Senologia / Mamografia',
+    doc:{av:'CF',name:'Dra. Cristina Ferreira',spec:'Radiologia · IPO Porto · 3,9 km',date:'10 mai',time:'11:00'},
+    others:[{av:'🏥',name:'Hospital da Luz — Porto',spec:'Radiologia · 5,1 km',date:'11 mai',time:'14:00'},{av:'🏥',name:'IPO Porto',spec:'Senologia · 3,9 km',date:'10 mai',time:'11:00'},{av:'👁',name:'Clínica CUF Porto',spec:'Mamografia · 2,7 km',date:'13 mai',time:'09:30'}],
+    notif:'Mamografia confirmada — Dra. Cristina Ferreira, 10 mai às 11:00 · IPO Porto',
+    phone:'+351 92• ••• •35',email:'sofia.mendes@mail.pt',
+    mailSubj:'mamografia de rastreio recomendada',
+    contactMsg:'Olá Sofia, fala-lhe a sua equipa de saúde através do Wellpath. A mamografia de rastreio está em atraso há 2 anos (recomendada anual com histórico familiar). Podemos ajudar a agendar — responda quando lhe for conveniente.',
+    portal:{dm1k:'Freq. card.',dm1v:'71bpm',dm3k:'Passos',dm3v:'6 100',
+      gapTitle:'Mamografia de rastreio em atraso',gapSub:'Histórico familiar 1.º grau · última mamografia há 2 anos',
+      tl:[['Freq. cardíaca e SpO₂','agora mesmo','Wearable'],['Exame ginecológico','2024','Seguradora'],['Ecografia pélvica','2023','Clínica'],['Mamografia','há 2 anos','Clínica']]}
+  }
+};
+
+let activeP='maria', cur=0;
+const ss=document.querySelectorAll('.screen'), sb=document.getElementById('sb');
+
+function show(n){
+  ss.forEach(function(s){var i=+s.dataset.i;s.classList.remove('active','past');if(i===n)s.classList.add('active');else if(i<n)s.classList.add('past');});
+  sb.classList.toggle('light',n===8||n===7); cur=n;
+  var pb=document.getElementById('portal-btn');
+  if(pb)pb.style.display=n===7?'flex':'none';
+}
+function go(n,outcome){if(outcome)setStatus(outcome);show(n);}
+function prev(){if(cur>0)show(cur-1);}
+function restart(){
+  // reset sources
+  ['sns','farm','wear','hosp','seg'].forEach(function(id){setSourceOn(id,true);});
+  setSourceOn('clin',false);
+  updateRail();filterTimeline();updateBody();
+  closeModal('modal-contact'); closeCompose();
+  show(0);
+}
+
+function selectProfile(id){
+  activeP=id; updateContent(); show(1);
+}
+
+function updateContent(){
+  var p=PROFILES[activeP];
+  // S1
+  document.getElementById('s1-title').textContent=p.title1;
+  document.getElementById('s1-name').textContent=p.name;
+  // S3 chips
+  document.getElementById('chip-hr').innerHTML=p.chips.hr+'<small> bpm</small>';
+  document.getElementById('chip-mid').innerHTML=p.chips.mid+'<small>'+p.chips.midU+'</small>';
+  document.getElementById('chip-mid-l').textContent=p.chips.midL;
+  document.getElementById('chip-steps').innerHTML=p.chips.steps+'<small> passos</small>';
+  // S3 timeline — render dinâmico por perfil + filtro por fontes ativas
+  renderTimeline();
+  updateBody();
+  // S4
+  document.getElementById('s4-av').style.background=p.color;
+  document.getElementById('s4-av').textContent=p.initials;
+  document.getElementById('s4-name').textContent=p.name.split(' ')[0]+', '+p.age;
+  document.getElementById('s4-cond').textContent=p.condLong;
+  document.getElementById('gap-title').textContent=p.gapTitle;
+  // has list
+  var hasH='';
+  p.has.forEach(function(h){hasH+='<div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>'+h[0]+'</b><small>'+h[1]+'</small></span></div>';});
+  document.getElementById('has-list').innerHTML=hasH;
+  document.getElementById('miss-item').textContent=p.miss;
+  document.getElementById('miss-time').textContent=p.missT;
+  document.getElementById('gap-reason').textContent=p.reason;
+  document.getElementById('gap-cross').textContent='Detetado ao cruzar '+p.cross;
+  // S5
+  document.getElementById('s5-title').textContent=p.s5title;
+  document.getElementById('s5-sub').textContent=p.s5sub;
+  // S6
+  document.getElementById('s6-spec').textContent=p.s6spec;
+  document.getElementById('doc-av').textContent=p.doc.av;
+  document.getElementById('doc-name').textContent=p.doc.name;
+  document.getElementById('doc-spec').textContent=p.doc.spec;
+  document.getElementById('doc-date').textContent=p.doc.date;
+  document.getElementById('doc-time').textContent=p.doc.time;
+  // others
+  var oh='';
+  var icons=['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>'];
+  p.others.forEach(function(o,i){oh+='<button class="opt" onclick="bookDoc(\'h'+(i+1)+'\')"><div class="oav">'+icons[i%3]+'</div><div class="ot"><b>'+o.name+'</b><small>'+o.spec+'</small></div><div class="oslot"><span>'+o.date+'</span><small>'+o.time+'</small></div></button>';});
+  document.getElementById('other-opts').innerHTML=oh;
+  // S7 notification
+  document.getElementById('notif-body').textContent=p.notif;
+  // S8 portal
+  document.getElementById('doc-pat-av').style.background=p.color;
+  document.getElementById('doc-pat-av').textContent=p.initials;
+  document.getElementById('doc-pat-name').textContent=p.name+', '+p.age;
+  document.getElementById('doc-pat-cond').textContent=p.cond+' · utente #4821';
+  document.getElementById('contact-name').textContent=p.name;
+  document.getElementById('contact-wa-detail').textContent=p.phone;
+  document.getElementById('contact-em-detail').textContent=p.email;
+  var pt=p.portal;
+  document.getElementById('dm1-k').textContent=pt.dm1k;
+  document.getElementById('dm1-v').innerHTML=pt.dm1v;
+  document.getElementById('dm3-k').textContent=pt.dm3k;
+  document.getElementById('dm3-v').innerHTML=pt.dm3v;
+  document.getElementById('doc-gap-title').textContent=pt.gapTitle;
+  document.getElementById('doc-gap-sub').textContent=pt.gapSub;
+  var ptl=pt.tl;
+  [1,2,3,4].forEach(function(i){
+    if(ptl[i-1]){
+      document.getElementById('ptl'+i).textContent=ptl[i-1][0];
+      if(i>1){document.getElementById('ptl'+i+'t').textContent=ptl[i-1][1];document.getElementById('ptl'+i+'s').textContent=ptl[i-1][2];}
+    }
+  });
+}
+
+// Source helpers
+var SRC_MAP={'Wearable':'wear','Sensor':'wear','Estimado':'wear','Farmácia':'farm','Farmácia Central':'farm','SNS':'sns','Clínica':'clin','Hospital':'hosp','Seguradora':'seg'};
+var SRC_IDS=['wear','farm','sns','hosp','seg','clin'];
+function srcOnId(id){var c=document.getElementById('src-'+id);return !c||c.dataset.on==='1';}
+function srcOn(name){return srcOnId(SRC_MAP[name]||'sns');}
+function updateRail(){
+  var on=0;
+  SRC_IDS.forEach(function(id){
+    var isOn=srcOnId(id);if(isOn)on++;
+    var ch=document.getElementById('chan-'+id);
+    if(ch){ch.style.display=isOn?'':'none';var ld=ch.querySelector('.live-dot');if(ld)ld.style.display=isOn?'':'none';}
+  });
+  var cc=document.getElementById('chan-count');if(cc)cc.textContent=on+' de '+SRC_IDS.length+' canais ligados';
+}
+function updateBody(){
+  var p=PROFILES[activeP];
+  var wearOn=srcOnId('wear');
+  var midSrc=SRC_MAP[(p.chips.midL.split('·').pop()||'').trim()]||'wear';
+  var midOn=srcOnId(midSrc);
+  document.getElementById('chip-hr-l').textContent=wearOn?'Ritmo · Wearable':'Ritmo · últ. leitura hoje';
+  document.getElementById('chip-steps-l').textContent=wearOn?'Hoje · Wearable':'Passos · últ. leitura hoje';
+  document.getElementById('chip-mid-l').textContent=midOn?p.chips.midL:p.chips.midL.split('·')[0].trim()+' · últ. leitura hoje';
+  var bm=document.querySelector('.bodymap');if(bm)bm.classList.toggle('stale',!wearOn);
+  var lb=document.getElementById('body-live');
+  if(lb){
+    if(wearOn){lb.innerHTML='<span class="pulse-dot" style="background:var(--green)"></span>Ao vivo';lb.style.background='';lb.style.color='';}
+    else{lb.textContent='Últimas leituras';lb.style.background='#F0F2F1';lb.style.color='var(--ink-3)';}
+  }
+}
+function renderTimeline(){
+  var p=PROFILES[activeP];var html='';
+  p.tl.forEach(function(entry,i){
+    html+='<div class="ev" data-src="'+entry[2]+'">'
+      +'<span class="ed'+(i===0?' new':'')+'"></span>'
+      +'<div class="etxt"><b>'+entry[0]+'</b><small>'+entry[1]+'</small></div>'
+      +'<span class="src-tag">'+entry[2]+'</span></div>';
+  });
+  document.getElementById('tl-list').innerHTML=html;
+  filterTimeline();
+}
+function filterTimeline(){
+  var list=document.getElementById('tl-list');if(!list)return;
+  var evs=list.querySelectorAll('.ev');
+  evs.forEach(function(ev){ev.style.display=srcOn(ev.dataset.src)?'':'none';});
+  // re-mark first visible as "new" dot
+  var first=true;
+  evs.forEach(function(ev){
+    if(ev.style.display!=='none'){var dot=ev.querySelector('.ed');if(dot){dot.className='ed'+(first?' new':'');first=false;}}
+  });
+}
+
+// Source toggle
+function toggleSrc(id){
+  var card=document.getElementById('src-'+id);
+  var on=card.dataset.on==='1';
+  setSourceOn(id,!on);
+  updateRail();
+  filterTimeline();
+  updateBody();
+}
+function setSourceOn(id,on){
+  var card=document.getElementById('src-'+id);
+  var stEl=document.getElementById('st-'+id);
+  var btn=card?card.querySelector('.src-btn'):null;
+  if(!card)return;
+  card.dataset.on=on?'1':'0';
+  card.classList.toggle('on',on);
+  if(on){
+    if(id==='wear'){stEl.innerHTML='<span class="pulse-dot" style="background:var(--green);margin-right:3px"></span>Ao vivo';}
+    else{stEl.innerHTML='<span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado';}
+    stEl.className='src-state on-s';
+    if(btn){btn.textContent='Desligar';btn.className='src-btn dis';}
+  }else{
+    stEl.innerHTML='Desligado';stEl.className='src-state off-s';
+    if(btn){btn.textContent='Ligar';btn.className='src-btn';}
+  }
+}
+
+// Booking
+function bookDoc(which){
+  var p=PROFILES[activeP];
+  var d,t,name,spec;
+  if(which==='prio'){d=p.doc.date;t=p.doc.time;name=p.doc.name;spec=p.doc.spec;}
+  else{var idx=parseInt(which.replace('h',''))-1;var o=p.others[idx];d=o.date;t=o.time;name=o.name;spec=o.spec;}
+  var notifTxt;
+  if(d==='via médico'){notifTxt=name+' — a aguardar referenciação';}
+  else{notifTxt=name+' — '+d+' às '+t+(spec.indexOf('km')>-1?' · '+spec.split('·')[0].trim():'');}
+  document.getElementById('notif-body').textContent=notifTxt;
+  go(7);
+}
+
+function setStatus(outcome){
+  var el=document.getElementById('doc-status'),tx=document.getElementById('doc-status-txt');
+  el.classList.remove('pending','done');
+  if(outcome==='feito'){el.classList.add('done');tx.textContent='Utente assinalou: já realizado noutra unidade';}
+  else if(outcome==='marcar'){el.classList.add('done');tx.textContent='Utente agendou exame — a aguardar resultado';}
+  else{el.classList.add('pending');tx.textContent='Utente adiou — nova sinalização em 2 semanas';}
+}
+
+function validateFlag(){
+  var el=document.getElementById('doc-status'),tx=document.getElementById('doc-status-txt');
+  el.classList.remove('pending');el.classList.add('done');
+  tx.textContent='Sinalização validada pelo profissional';
+}
+
+// Modals
+function openContact(){document.getElementById('modal-contact').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openChannel(type){
+  closeModal('modal-contact');
+  var p=PROFILES[activeP];
+  var isWa=type==='whatsapp';
+  var msg=p.contactMsg;
+  var headCls=isWa?'wa-h':'em-h';
+  var bodyCls=isWa?'wa-body':'em-body';
+  var footCls=isWa?'wa-f':'em-f';
+  var sendCls=isWa?'wa-s':'em-s';
+  var inCls=isWa?'compose-input':'compose-input em-in';
+  var subtitle=isWa?p.phone+' · via WhatsApp':p.email+' · via E-mail';
+  var bodyHTML='';
+  if(isWa){bodyHTML='<div class="wa-bubble"><p>'+msg+'</p><div class="wa-meta">15:42 ✓✓</div></div>';}
+  else{bodyHTML='<div class="em-fields"><div class="em-row"><label>Para:</label><span>'+p.email+'</span></div><div class="em-row"><label>De:</label><span>equipa.saude@wellpath.pt</span></div><div class="em-row"><label>Assunto:</label><span>Wellpath — '+p.mailSubj+'</span></div></div><div class="em-body-txt">'+msg+'</div>';}
+  var sentText=isWa?'Mensagem enviada via WhatsApp':'E-mail enviado com sucesso';
+  var m=document.getElementById('modal-compose');
+  m.innerHTML='<div class="compose-head '+headCls+'"><button class="back" onclick="closeCompose()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="ch-info"><b>'+p.name+'</b><small>'+subtitle+'</small></div></div>'
+    +'<div class="compose-body '+bodyCls+'" id="cb-area">'+bodyHTML+'</div>'
+    +'<div class="compose-footer '+footCls+'"><textarea class="'+inCls+'" id="ci" placeholder="Escrever mensagem..."></textarea><button class="send-btn '+sendCls+'" onclick="sendMsg(\''+type+'\',\''+sentText+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>';
+  m.classList.add('open');
+}
+function closeCompose(){document.getElementById('modal-compose').classList.remove('open');}
+function sendMsg(type,txt){
+  var isWa=type==='whatsapp';
+  var cb=document.getElementById('cb-area');
+  cb.innerHTML='<div class="sent-msg'+(isWa?'':' em-sm')+'" style="padding-top:60px"><div class="sent-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><b>'+txt+'</b><p style="margin-top:8px;font-size:12px;opacity:.8">O utente será notificado. O Wellpath regista o contacto.</p></div>';
+  var cf=document.querySelector('.compose-footer');
+  if(cf)cf.style.display='none';
+  setTimeout(function(){closeCompose();},2500);
+}
+
+// Live vitals
+var secs=4;
+function live(){
+  secs+=3;if(secs>59)secs=4;
+  var p=PROFILES[activeP];
+  if(srcOnId('wear')){
+    var hr=69+Math.floor(Math.random()*8);
+    document.getElementById('chip-hr').innerHTML=hr+'<small> bpm</small>';
+    if(p.id==='maria'){var g=124+Math.floor(Math.random()*6);document.getElementById('chip-mid').innerHTML=g+'<small> mg/dL</small>';}
+  }
+  var g2=document.getElementById('gluc2');if(g2)g2.textContent=124+Math.floor(Math.random()*6);
+  var g2t=document.getElementById('gluc2-t');if(g2t)g2t.textContent='há '+secs+' s';
+  var lt=document.getElementById('lock-time');if(lt){var d=new Date();lt.textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
+}
+setInterval(live,3000);
+function tick(){var d=new Date();document.getElementById('clock').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
+tick();setInterval(tick,10000);
+
+// init with default profile
+updateContent();
+updateRail();
+</script>
+</body>
+</html>
