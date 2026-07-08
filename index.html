@@ -445,7 +445,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       <!-- Farmácia -->
       <div class="src-card on" id="src-farm" data-on="1">
         <div class="src-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v6m0 0l3-3m-3 3L9 5M6 12h12l-1.5 8a2 2 0 01-2 1.7H9.5a2 2 0 01-2-1.7L6 12z"/></svg></div>
-        <div class="src-meta"><b>Farmácia Central</b><small>Medicação e renovações</small></div>
+        <div class="src-meta"><b>Associação Nacional de Farmácias</b><small>Medicação e renovações</small></div>
         <div class="src-right"><div class="src-state on-s" id="st-farm"><span class="tick-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span>Ligado</div><button class="src-btn dis" onclick="toggleSrc('farm')">Desligar</button></div>
       </div>
       <!-- Wearable -->
@@ -517,7 +517,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
           <div class="col"><h4>No teu histórico</h4><div id="has-list">
             <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Diabetes tipo 2</b><small>SNS</small></span></div>
             <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>HbA1c 7,1%</b><small>Jan 2026 · SNS</small></span></div>
-            <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Metformina</b><small>Farmácia Central</small></span></div>
+            <div class="item has"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Metformina</b><small>Associação Nacional de Farmácias</small></span></div>
           </div></div>
           <div class="col"><h4>Em falta</h4><div class="item miss"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/></svg></span><span><b id="miss-item">Exame oftalmológico de rastreio</b><small id="miss-time">há 26 meses</small></span></div></div>
         </div>
@@ -701,7 +701,7 @@ const PROFILES={
     chips:{hr:'72',mid:'126',midU:' mg/dL',midL:'Glicemia · Sensor',steps:'5 240'},
     tl:[['Ritmo cardíaco e glicemia','agora mesmo','Wearable'],['Metformina renovada','ontem','Farmácia'],['Consulta de diabetologia','há 3 meses','SNS'],['Análises — HbA1c 7,1%','Jan 2026','SNS'],['Vacina da gripe','Out 2025','Farmácia'],['Rastreio oftalmológico','mai 2024','Clínica'],['Diagnóstico — Diabetes tipo 2','2020','SNS']],
     gapTitle:'Falta um rastreio importante',
-    has:[['Diabetes tipo 2','SNS'],['HbA1c 7,1%','Jan 2026 · SNS'],['Metformina','Farmácia Central']],
+    has:[['Diabetes tipo 2','SNS'],['HbA1c 7,1%','Jan 2026 · SNS'],['Metformina','Associação Nacional de Farmácias']],
     miss:'Exame oftalmológico de rastreio',missT:'há 26 meses',
     reason:'Porque tens diabetes, é recomendado um exame oftalmológico anual. A retinopatia não dá sintomas até fases avançadas.',
     cross:'SNS + Farmácia',
@@ -905,7 +905,7 @@ function updateContent(){
 }
 
 // Source helpers
-var SRC_MAP={'Wearable':'wear','Sensor':'wear','Estimado':'wear','Farmácia':'farm','Farmácia Central':'farm','SNS':'sns','Clínica':'clin','Hospital':'hosp','Seguradora':'seg'};
+var SRC_MAP={'Wearable':'wear','Sensor':'wear','Estimado':'wear','Farmácia':'farm','Associação Nacional de Farmácias':'farm','SNS':'sns','Clínica':'clin','Hospital':'hosp','Seguradora':'seg'};
 var SRC_IDS=['wear','farm','sns','hosp','seg','clin'];
 function srcOnId(id){var c=document.getElementById('src-'+id);return !c||c.dataset.on==='1';}
 function srcOn(name){return srcOnId(SRC_MAP[name]||'sns');}
