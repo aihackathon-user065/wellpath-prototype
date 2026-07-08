@@ -27,7 +27,7 @@ body{font-family:var(--font);background:radial-gradient(1200px 700px at 50% -10%
 .sb.light{color:#fff}.sb .bars{display:flex;gap:4px;align-items:flex-end}
 .sb .bar{width:3px;border-radius:2px;background:currentColor}
 .screens{position:absolute;inset:0;padding-top:52px}
-.screen{position:absolute;inset:0;padding:52px 22px 20px;display:flex;flex-direction:column;
+.screen{position:absolute;inset:52px 0 0 0;padding:12px 22px 20px;display:flex;flex-direction:column;
   opacity:0;transform:translateX(24px);pointer-events:none;
   transition:opacity .42s cubic-bezier(.4,0,.2,1),transform .42s cubic-bezier(.4,0,.2,1);overflow-y:auto}
 .screen::-webkit-scrollbar{width:0}
@@ -207,7 +207,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .pbadge svg{width:10px;height:10px}
 
 /* S7 iOS notification */
-.screen.lock{padding:0}
+.screen.lock{inset:0;padding:0}
 .lock-bg{width:100%;height:100%;background:linear-gradient(160deg,#1a3a3a 0%,#0d2020 50%,#0a1a2e 100%);display:flex;flex-direction:column;align-items:center;padding-top:60px;position:relative}
 .lock-time{font-size:68px;font-weight:200;color:#fff;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
 .lock-date{font-size:15px;color:rgba(255,255,255,.7);font-weight:400;margin-bottom:32px;letter-spacing:-.01em}
@@ -229,7 +229,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .next-cta:hover{background:rgba(255,255,255,.25)}
 
 /* S8 portal */
-.screen.doc{padding:0}
+.screen.doc{inset:0;padding:0}
 .doc-head{background:var(--slate);color:#fff;padding:58px 20px 46px;margin-bottom:-30px}
 .doc-head .role{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8FB3AF;display:flex;align-items:center;gap:7px;margin-bottom:12px}
 .doc-head .live-badge{background:rgba(255,255,255,.1);color:#8FE0A0}
@@ -322,6 +322,25 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .controls button:hover{border-color:var(--teal);color:var(--ti)}
 .controls button svg{width:13px;height:13px}
 .caption{font-size:11.5px;color:#8A908C;text-align:center;max-width:380px;line-height:1.5}
+
+/* mobile (QR): app em ecrã inteiro, sem moldura nem status bar simulada */
+@media(max-width:520px){
+  body{padding:0;gap:0;background:var(--bg)}
+  .stage{width:100%;gap:0}
+  .phone{width:100%;height:100dvh;max-height:none;border-radius:0;padding:0;box-shadow:none;background:var(--bg)}
+  .sw{border-radius:0}
+  .notch,.sb{display:none}
+  .screen{inset:0;padding:calc(14px + env(safe-area-inset-top)) 18px 88px}
+  .screen.lock,.screen.doc{inset:0;padding:0}
+  .doc-head{padding-top:calc(18px + env(safe-area-inset-top))}
+  .doc-body{padding-bottom:96px}
+  .compose-head{padding-top:calc(14px + env(safe-area-inset-top))}
+  .lock-bg{padding-top:calc(44px + env(safe-area-inset-top))}
+  .modal-ov,.compose-modal{border-radius:0}
+  .controls{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:300;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:26px;padding:6px;box-shadow:var(--lift);gap:6px;width:max-content;max-width:calc(100vw - 16px);flex-wrap:wrap;justify-content:center}
+  .controls button{font-size:12px;padding:8px 12px;white-space:nowrap}
+  .caption{display:none}
+}
 </style>
 </head>
 <body>
