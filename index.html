@@ -275,6 +275,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .ch-btn .ch-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .ch-btn.wa .ch-ic{background:#E8F5E9}.ch-btn.wa .ch-ic svg{color:#25D366}
 .ch-btn.em .ch-ic{background:#E3F0FB}.ch-btn.em .ch-ic svg{color:#3B82F6}
+.ch-btn .ch-ic svg{width:20px;height:20px}
 .ch-btn .ch-t{display:flex;flex-direction:column;gap:1px}
 .ch-btn .ch-t b{font-size:15px;font-weight:700}
 .ch-btn .ch-t small{font-size:12px;color:var(--ink-3);font-weight:500}
@@ -576,7 +577,7 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
           </div>
           <div class="doc-actions">
             <button onclick="openContact()">Contactar utente</button>
-            <button class="p" onclick="validateFlag()">Validar</button>
+            <button class="p" id="validate-btn" onclick="validateFlag()">Validar</button>
           </div>
         </div>
       </div>
@@ -735,7 +736,7 @@ let activeP='maria', cur=0;
 const ss=document.querySelectorAll('.screen'), sb=document.getElementById('sb');
 
 function show(n){
-  ss.forEach(function(s){var i=+s.dataset.i;s.classList.remove('active','past');if(i===n)s.classList.add('active');else if(i<n)s.classList.add('past');});
+  ss.forEach(function(s){var i=+s.dataset.i;s.classList.remove('active','past');if(i===n){s.classList.add('active');s.scrollTop=0;}else if(i<n)s.classList.add('past');});
   sb.classList.toggle('light',n===8||n===7); cur=n;
   var pb=document.getElementById('portal-btn');
   if(pb)pb.style.display=n===7?'flex':'none';
@@ -915,6 +916,7 @@ function bookDoc(which){
 }
 
 function setStatus(outcome){
+  resetValidation();
   var el=document.getElementById('doc-status'),tx=document.getElementById('doc-status-txt');
   el.classList.remove('pending','done');
   if(outcome==='feito'){el.classList.add('done');tx.textContent='Utente assinalou: já realizado noutra unidade';}
@@ -922,10 +924,24 @@ function setStatus(outcome){
   else{el.classList.add('pending');tx.textContent='Utente adiou — nova sinalização em 2 semanas';}
 }
 
+var flagValidated=false,prevStatusState=null;
+function resetValidation(){
+  flagValidated=false;prevStatusState=null;
+  var btn=document.getElementById('validate-btn');
+  if(btn){btn.textContent='Validar';btn.classList.add('p');}
+}
 function validateFlag(){
-  var el=document.getElementById('doc-status'),tx=document.getElementById('doc-status-txt');
-  el.classList.remove('pending');el.classList.add('done');
-  tx.textContent='Sinalização validada pelo profissional';
+  var el=document.getElementById('doc-status'),tx=document.getElementById('doc-status-txt'),btn=document.getElementById('validate-btn');
+  if(!flagValidated){
+    prevStatusState={cls:el.className,txt:tx.textContent};
+    el.classList.remove('pending');el.classList.add('done');
+    tx.textContent='Sinalização validada pelo profissional';
+    if(btn){btn.textContent='Retirar validação';btn.classList.remove('p');}
+    flagValidated=true;
+  }else{
+    if(prevStatusState){el.className=prevStatusState.cls;tx.textContent=prevStatusState.txt;}
+    resetValidation();
+  }
 }
 
 // Modals
