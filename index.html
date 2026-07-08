@@ -298,6 +298,18 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .ch-btn .ch-t small{font-size:12px;color:var(--ink-3);font-weight:500}
 .ch-btn.cancel{justify-content:center;border-color:transparent;color:var(--ink-3);font-size:14px;margin-bottom:0}
 .ch-btn.cancel:hover{transform:none;box-shadow:none;background:#F7F7F5}
+.ch-btn.rm{justify-content:center;font-size:15px}
+/* call overlay */
+.call-bg{width:100%;height:100%;background:linear-gradient(170deg,#1C2E2C,#0F1B19);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:40px}
+.call-av{width:104px;height:104px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.call-av svg{width:48px;height:48px;color:#8FE0A0}
+.call-bg b{font-size:24px;font-weight:700;letter-spacing:-.02em;display:block;margin-bottom:6px}
+.call-bg small{font-size:13.5px;color:#A9C4C1}
+.call-status{margin-top:20px;font-size:15px;font-weight:600;color:#8FE0A0}
+.call-note{font-size:11.5px;color:#7E9995;margin-top:8px}
+.call-end{margin-top:46px;width:68px;height:68px;border-radius:50%;border:none;background:#C0554E;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(192,85,78,.4);transition:transform .2s}
+.call-end:hover{transform:scale(1.06)}
+.call-end svg{width:30px;height:30px;color:#fff}
 /* compose modal */
 .compose-modal{position:absolute;inset:0;z-index:101;display:flex;flex-direction:column;border-radius:42px;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(30px);transition:opacity .3s,transform .3s}
 .compose-modal.open{opacity:1;pointer-events:auto;transform:none}
@@ -521,7 +533,8 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       <div class="ask">O que queres fazer?</div>
       <button class="choice primary" onclick="go(6)"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M9 14l2 2 4-4"/></svg></span><span class="ctxt"><b>Marcar exame</b><small>Ver opções perto de ti</small></span></button>
       <button class="choice sec" onclick="go(8,'feito')"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ctxt"><b>Já fiz este exame noutro sítio</b><small>Remove a sinalização</small></span></button>
-      <button class="choice tert" onclick="go(8,'lembrar')"><span class="ctxt"><b>Lembrar-me mais tarde</b></span></button>
+      <button class="choice tert" onclick="openRemind()"><span class="ctxt"><b>Lembrar-me mais tarde</b></span></button>
+      <button class="opt" onclick="openCall()"><div class="oav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div><div class="ot"><b>Falar com o apoio Wellpath</b><small>Liga a um profissional de saúde · dias úteis 8h–20h</small></div></button>
       <div class="grow"></div>
       <div class="decide-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12l2 2 4-4"/></svg>Tu decides sempre. O Wellpath apenas sinaliza.</div>
       <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i></div>
@@ -635,6 +648,32 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
         <span class="ch-t"><b>E-mail</b><small id="contact-em-detail">maria.santos@mail.pt</small></span>
       </button>
       <button class="ch-btn cancel" onclick="closeModal('modal-contact')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- MODAL: lembrar mais tarde -->
+  <div class="modal-ov" id="modal-remind">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3>Lembrar-me mais tarde</h3>
+      <p>Quando queres voltar a ser lembrado?</p>
+      <button class="ch-btn rm" onclick="remindIn('amanhã')">Amanhã</button>
+      <button class="ch-btn rm" onclick="remindIn('daqui a 1 semana')">Daqui a 1 semana</button>
+      <button class="ch-btn rm" onclick="remindIn('daqui a 2 semanas')">Daqui a 2 semanas</button>
+      <button class="ch-btn rm" onclick="remindIn('daqui a 1 mês')">Daqui a 1 mês</button>
+      <button class="ch-btn cancel" onclick="closeModal('modal-remind')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- MODAL: chamada apoio -->
+  <div class="compose-modal" id="modal-call">
+    <div class="call-bg">
+      <div class="call-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13a9 9 0 0118 0M3 13v4a2 2 0 002 2h1a2 2 0 002-2v-2a2 2 0 00-2-2H3M21 13v4a2 2 0 01-2 2h-1a2 2 0 01-2-2v-2a2 2 0 012-2h3M12 21v1"/></svg></div>
+      <b>Apoio Wellpath</b>
+      <small>Linha de apoio clínico · dias úteis 8h–20h</small>
+      <div class="call-status" id="call-status">A ligar…</div>
+      <div class="call-note">Demonstração — nenhuma chamada real é efetuada.</div>
+      <button class="call-end" onclick="endCall()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.29-.7.29-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.7l-2.48 2.49c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.29-.79-.73-1.68-1.36-2.66-1.85-.33-.16-.56-.51-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></button>
     </div>
   </div>
 
@@ -783,7 +822,8 @@ function restart(){
   ['sns','farm','wear','hosp','seg'].forEach(function(id){setSourceOn(id,true);});
   setSourceOn('clin',false);
   updateRail();filterTimeline();updateBody();
-  closeModal('modal-contact'); closeCompose();
+  closeModal('modal-contact'); closeModal('modal-remind'); endCall(); closeCompose();
+  remindLabel='daqui a 2 semanas';
   show(0);
 }
 
@@ -962,8 +1002,26 @@ function setStatus(outcome){
   el.classList.remove('pending','done');
   if(outcome==='feito'){el.classList.add('done');tx.textContent='Utente assinalou: já realizado noutra unidade';}
   else if(outcome==='marcar'){el.classList.add('done');tx.textContent='Utente agendou exame — a aguardar resultado';}
-  else{el.classList.add('pending');tx.textContent='Utente adiou — nova sinalização em 2 semanas';}
+  else{el.classList.add('pending');tx.textContent='Utente adiou — novo lembrete '+remindLabel;}
 }
+
+// Lembrar mais tarde
+var remindLabel='daqui a 2 semanas';
+function openRemind(){document.getElementById('modal-remind').classList.add('open');}
+function remindIn(label){remindLabel=label;closeModal('modal-remind');go(8,'lembrar');}
+
+// Chamada apoio Wellpath (simulada)
+var callTimer=null;
+function openCall(){
+  document.getElementById('modal-call').classList.add('open');
+  var st=document.getElementById('call-status');st.textContent='A ligar…';
+  clearInterval(callTimer);var t=0;
+  callTimer=setInterval(function(){
+    t++;
+    if(t>=3){var s=t-2;st.textContent='Em chamada · '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+  },1000);
+}
+function endCall(){clearInterval(callTimer);document.getElementById('modal-call').classList.remove('open');}
 
 var flagValidated=false,prevStatusState=null;
 function resetValidation(){
@@ -1040,6 +1098,9 @@ tick();setInterval(tick,10000);
 // init with default profile
 updateContent();
 updateRail();
+// deep-link: ?s=N abre diretamente no ecrã N
+var _s=new URLSearchParams(location.search).get('s');
+if(_s!==null)show(Math.max(0,Math.min(9,+_s||0)));
 </script>
 </body>
 </html>
