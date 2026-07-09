@@ -86,7 +86,31 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
 .rgpd{font-size:11px;color:var(--ink-3);text-align:center;margin-top:12px;line-height:1.5;display:flex;align-items:center;justify-content:center;gap:5px}
 .rgpd svg{width:12px;height:12px;flex:0 0 auto}
 
-/* S2 fontes */
+/* S1 login CMD */
+.cmd-card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.cmd-head{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.cmd-ic{width:46px;height:46px;border-radius:12px;background:#003E7C;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.cmd-ic svg{width:24px;height:24px;color:#fff}
+.cmd-head b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.cmd-head small{font-size:11.5px;color:var(--ink-3);font-weight:500}
+.cmd-perks{border-top:1px solid var(--line);padding-top:11px;display:flex;flex-direction:column;gap:7px}
+.perk{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--ink-2);line-height:1.4}
+.perk svg{width:14px;height:14px;flex:0 0 auto;margin-top:1px;color:var(--teal)}
+.cmd-btn{margin-top:13px;width:100%;background:#003E7C;color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;padding:14px;border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:opacity .2s}
+.cmd-btn:disabled{opacity:.75;cursor:wait}
+.cmd-btn svg{width:16px;height:16px}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--ink-3);font-size:12px;font-weight:600}
+.divider::before,.divider::after{content:"";flex:1;border-top:1px solid var(--line)}
+.alt-btn{width:100%;background:#fff;border:1.5px solid var(--line);border-radius:15px;padding:13px 15px;font-family:var(--font);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;text-align:left}
+.alt-btn:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:var(--shadow)}
+.alt-btn .ai{width:38px;height:38px;border-radius:10px;background:#EEF3F2;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.alt-btn .ai svg{width:19px;height:19px;color:var(--ti)}
+.alt-btn b{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em}
+.alt-btn small{font-size:11.5px;color:var(--ink-3);font-weight:500}
+.cmd-ok{display:none;align-items:center;gap:8px;background:#EAF4EC;border:1px solid #D3E8D8;color:var(--ti);border-radius:12px;padding:10px 13px;font-size:12px;font-weight:600;margin-bottom:10px;line-height:1.35}
+.cmd-ok svg{width:15px;height:15px;flex:0 0 auto;color:var(--green)}
+
+/* S3 fontes */
 .src-card{background:var(--card);border-radius:15px;padding:14px 15px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);margin-bottom:10px;border:1.5px solid transparent;transition:border-color .3s}
 .src-card.on{border-color:#DCEBE9}
 .src-ic{width:38px;height:38px;border-radius:10px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#F0F2F1}
@@ -414,25 +438,53 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       </div>
     </section>
 
-    <!-- S1 REGISTO E PRIVACIDADE -->
+    <!-- S1 LOGIN / CHAVE MÓVEL DIGITAL -->
     <section class="screen" data-i="1">
+      <div class="hero-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div>
+      <h1>Cria a tua conta</h1>
+      <p class="sub">Usa a tua identidade digital do Estado Português — é a forma mais rápida e segura.</p>
+      <div class="cmd-card">
+        <div class="cmd-head">
+          <div class="cmd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 5.5h4M12 17.5v.01"/><circle cx="12" cy="11" r="2.2"/><path d="M12 13.2v2"/></svg></div>
+          <div><b>Chave Móvel Digital</b><small>autenticacao.gov.pt · Estado Português</small></div>
+        </div>
+        <div class="cmd-perks">
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg><span>O teu <b>número de utente</b> é obtido automaticamente</span></div>
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg><span>Identidade verificada — sem formulários nem esperas</span></div>
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg><span>Autenticação de dois fatores do Estado</span></div>
+        </div>
+        <button class="cmd-btn" id="cmd-btn" onclick="cmdAuth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Continuar com a Chave Móvel Digital</button>
+      </div>
+      <div class="divider">ou</div>
+      <button class="alt-btn" onclick="manualReg()">
+        <div class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
+        <div><b>Não tenho Chave Móvel Digital</b><small>Regista-te com email — o número de utente é pedido depois</small></div>
+      </button>
+      <div class="grow"></div>
+      <div class="rgpd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg>Dados tratados ao abrigo do RGPD. Podes revogar a qualquer momento.</div>
+      <div class="steps"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <!-- S2 REGISTO E PRIVACIDADE -->
+    <section class="screen" data-i="2">
       <div class="hero-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div>
       <h1 id="s1-title">Bem-vinda ao Wellpath</h1>
       <p class="sub">O teu histórico de saúde, reunido num só lugar. Primeiro, o essencial — e a tua privacidade.</p>
       <div class="field"><label>Nome</label><div class="val" id="s1-name">Maria Santos</div></div>
       <div class="field"><label>Número de utente</label><div class="val dim">•••• •••• 4821</div></div>
+      <div class="cmd-ok" id="cmd-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Dados obtidos via Chave Móvel Digital — identidade verificada</div>
       <div class="consent">
         <div class="crow"><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div><div class="ct"><b>Reunir o meu histórico</b><small>Autorizo o Wellpath a ligar-se às minhas fontes de saúde</small></div><div class="toggle" onclick="this.classList.toggle('off')"></div></div>
         <div class="crow"><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12l2 2 4-4"/></svg></div><div class="ct"><b>Receber recomendações preventivas</b><small>Lembretes, nunca aconselhamento clínico</small></div><div class="toggle" onclick="this.classList.toggle('off')"></div></div>
       </div>
       <div class="rgpd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg>Dados tratados ao abrigo do RGPD. Podes revogar a qualquer momento.</div>
       <div class="grow"></div>
-      <button class="cta" onclick="go(2)">Criar conta e continuar</button>
-      <div class="steps"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <button class="cta" onclick="go(3)">Criar conta e continuar</button>
+      <div class="steps"><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </section>
 
-    <!-- S2 FONTES DE DADOS -->
-    <section class="screen" data-i="2">
+    <!-- S3 FONTES DE DADOS -->
+    <section class="screen" data-i="3">
       <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M4 7a3 3 0 013-3h1M20 7a3 3 0 00-3-3h-1M4 17a3 3 0 003 3h1M20 17a3 3 0 01-3 3h-1"/></svg></div><div><b>Fontes de dados</b><br><span>o que o Wellpath vai reunir</span></div></div>
       <h1>As tuas fontes de saúde</h1>
       <p class="sub">Ligamos-nos às entidades que autorizaste. Controla cada ligação a qualquer momento.</p>
@@ -480,12 +532,12 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       </div>
       <div class="synced"><span class="pulse-dot" style="background:var(--green)"></span>A sincronizar histórico em tempo real</div>
       <div class="grow"></div>
-      <button class="cta" onclick="go(3)">Ver o meu corpo</button>
-      <div class="steps"><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+      <button class="cta" onclick="go(4)">Ver o meu corpo</button>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
     </section>
 
-    <!-- S3 O MEU CORPO EM TEMPO REAL -->
-    <section class="screen" data-i="3">
+    <!-- S4 O MEU CORPO EM TEMPO REAL -->
+    <section class="screen" data-i="4">
       <div class="live-head"><b>O meu corpo</b><span class="live-badge" id="body-live"><span class="pulse-dot" style="background:var(--green)"></span>Ao vivo</span></div>
       <div class="bodymap">
         <svg class="fig" viewBox="0 0 120 250" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="26" r="18"/><path d="M52 44 h16 v6 c14 3 22 14 22 30 v34 c0 6-4 9-9 9 l-2-30 -1 42 c0 2-1 32-2 46 c-1 8-11 8-12 0 l-4-34 -4 34 c-1 8-11 8-12 0 c-1-14-2-44-2-46 l-1-42 -2 30 c-5 0-9-3-9-9 v-34 c0-16 8-27 22-30 z"/></svg>
@@ -511,12 +563,12 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
         <div id="tl-list"></div>
       </div>
       <div class="grow"></div>
-      <button class="cta" onclick="go(4)">Continuar</button>
-      <div class="steps"><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      <button class="cta" onclick="go(5)">Continuar</button>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
     </section>
 
-    <!-- S4 RECOMENDAÇÃO -->
-    <section class="screen" data-i="4">
+    <!-- S5 RECOMENDAÇÃO -->
+    <section class="screen" data-i="5">
       <div class="profile-chip"><div class="pavatar" id="s4-av" style="background:#5E9B99">M</div><div class="meta"><b id="s4-name">Maria, 58</b><small id="s4-cond">Diabetes tipo 2 · seguida no SNS</small></div></div>
       <div class="gapcard">
         <div class="gaphead"><div class="flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 21V4M4 4l7 2 9-2v10l-9 2-7-2"/></svg></div><b id="gap-title">Falta um rastreio importante</b></div>
@@ -532,25 +584,25 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
         <div class="stag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 12h8M8 12l3-3M8 12l3 3"/><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg><span id="gap-cross">Detetado ao cruzar SNS + Farmácia</span></div>
       </div>
       <div class="grow"></div>
-      <button class="cta" onclick="go(5)">Ver o que fazer</button>
-      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i></div>
+      <button class="cta" onclick="go(6)">Ver o que fazer</button>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i></div>
     </section>
 
-    <!-- S5 O QUE FAZER -->
-    <section class="screen" data-i="5">
+    <!-- S6 O QUE FAZER -->
+    <section class="screen" data-i="6">
       <div class="reco-strip"><span class="dot"></span><div><b id="s5-title">Exame oftalmológico de rastreio</b><small id="s5-sub">Em falta há 26 meses</small></div></div>
       <div class="ask">O que queres fazer?</div>
-      <button class="choice primary" onclick="go(6)"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M9 14l2 2 4-4"/></svg></span><span class="ctxt"><b>Marcar exame</b><small>Ver opções perto de ti</small></span></button>
-      <button class="choice sec" onclick="go(8,'feito')"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ctxt"><b>Já fiz este exame noutro sítio</b><small>Remove a sinalização</small></span></button>
+      <button class="choice primary" onclick="go(7)"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M9 14l2 2 4-4"/></svg></span><span class="ctxt"><b>Marcar exame</b><small>Ver opções perto de ti</small></span></button>
+      <button class="choice sec" onclick="go(9,'feito')"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="ctxt"><b>Já fiz este exame noutro sítio</b><small>Remove a sinalização</small></span></button>
       <button class="choice tert" onclick="openRemind()"><span class="ctxt"><b>Lembrar-me mais tarde</b></span></button>
       <button class="opt" onclick="openCall()"><div class="oav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div><div class="ot"><b>Falar com o apoio Wellpath</b><small>Liga a um profissional de saúde · dias úteis 8h–20h</small></div></button>
       <div class="grow"></div>
       <div class="decide-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9 12l2 2 4-4"/></svg>Tu decides sempre. O Wellpath apenas sinaliza.</div>
-      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i></div>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i></div>
     </section>
 
-    <!-- S6 MARCAÇÃO -->
-    <section class="screen" data-i="6">
+    <!-- S7 MARCAÇÃO -->
+    <section class="screen" data-i="7">
       <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div><div><b>Marcar exame</b><br><span id="s6-spec">Rastreio oftalmológico</span></div></div>
       <div class="book-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-6 0V5a3 3 0 013-3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>Priorizámos quem já te acompanhou. O teu histórico segue contigo — não precisas de repetir nada.</span></div>
       <div class="sec-h">Continuidade de cuidados</div>
@@ -566,12 +618,12 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
         <button class="opt" onclick="bookDoc('h3')"><div class="oav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div><div class="ot"><b id="o3-name">Centro de Saúde — SNS</b><small id="o3-spec">Referenciação · 1,8 km</small></div><div class="oslot"><span id="o3-date">via médico</span><small id="o3-time">de família</small></div></button>
       </div>
       <div class="grow"></div>
-      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i></div>
+      <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i></div>
     </section>
 
-    <!-- S7 NOTIFICAÇÃO iOS -->
-    <section class="screen lock" data-i="7">
-      <div class="lock-bg" onclick="go(8,'marcar')">
+    <!-- S8 NOTIFICAÇÃO iOS -->
+    <section class="screen lock" data-i="8">
+      <div class="lock-bg" onclick="go(9,'marcar')">
         <div class="lock-time" id="lock-time">15:41</div>
         <div class="lock-date">Terça-feira, 8 de julho</div>
         <div class="notif-card">
@@ -590,8 +642,8 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
       </div>
     </section>
 
-    <!-- S8 ADMISSÃO (transição utente → profissional) -->
-    <section class="screen handover" data-i="8">
+    <!-- S9 ADMISSÃO (transição utente → profissional) -->
+    <section class="screen handover" data-i="9">
       <div class="ho-bg">
         <div class="ho-top"><span class="ho-badge"><span class="pulse-dot" style="background:#8FE0A0"></span>Mudança de perspetiva</span></div>
         <h2>Vais agora ver o Wellpath do lado do profissional de saúde</h2>
@@ -601,14 +653,14 @@ h1{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-b
           <div class="ho-pat"><div class="ho-av" id="ho-av" style="background:#5E9B99">M</div><div><b id="ho-name">Maria Santos, 58</b><small id="ho-cond">Diabetes tipo 2 · utente #4821</small></div></div>
           <div class="ho-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><span id="ho-reason">Sinalização: Exame oftalmológico de rastreio</span></div>
           <div class="ho-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>Consentimento de partilha ativo — histórico omnicanal disponível</span></div>
-          <button class="cta" onclick="show(9)">Admitir utente →</button>
+          <button class="cta" onclick="show(10)">Admitir utente →</button>
         </div>
         <div class="ho-note">Demonstração — num cenário real, o profissional recebe esta admissão no seu sistema.</div>
       </div>
     </section>
 
-    <!-- S9 PORTAL DO PROFISSIONAL -->
-    <section class="screen doc" data-i="9">
+    <!-- S10 PORTAL DO PROFISSIONAL -->
+    <section class="screen doc" data-i="10">
       <div class="doc-wrap">
         <div class="doc-head">
           <div class="role"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-6 0V5a3 3 0 013-3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>Portal do profissional<span class="live-badge" style="background:rgba(255,255,255,.1);color:#8FE0A0"><span class="pulse-dot" style="background:#8FE0A0"></span>Live data</span></div>
@@ -819,7 +871,7 @@ const ss=document.querySelectorAll('.screen'), sb=document.getElementById('sb');
 
 function show(n){
   ss.forEach(function(s){var i=+s.dataset.i;s.classList.remove('active','past');if(i===n){s.classList.add('active');s.scrollTop=0;}else if(i<n)s.classList.add('past');});
-  sb.classList.toggle('light',n>=7); cur=n;
+  sb.classList.toggle('light',n>=8); cur=n;
 }
 function go(n,outcome){if(outcome)setStatus(outcome);show(n);}
 function prev(){if(cur>0)show(cur-1);}
@@ -835,6 +887,23 @@ function restart(){
 
 function selectProfile(id){
   activeP=id; updateContent(); show(1);
+}
+
+// Login: Chave Móvel Digital (simulada) ou registo manual
+var CMD_BTN_HTML=null;
+function cmdAuth(){
+  var b=document.getElementById('cmd-btn');
+  if(CMD_BTN_HTML===null)CMD_BTN_HTML=b.innerHTML;
+  b.disabled=true;b.textContent='A contactar autenticacao.gov.pt…';
+  setTimeout(function(){
+    b.disabled=false;b.innerHTML=CMD_BTN_HTML;
+    var bd=document.getElementById('cmd-badge');if(bd)bd.style.display='flex';
+    show(2);
+  },1400);
+}
+function manualReg(){
+  var bd=document.getElementById('cmd-badge');if(bd)bd.style.display='none';
+  show(2);
 }
 
 function updateContent(){
@@ -1000,7 +1069,7 @@ function bookDoc(which){
   if(d==='via médico'){notifTxt=name+' — a aguardar referenciação';}
   else{notifTxt=name+' — '+d+' às '+t+(spec.indexOf('km')>-1?' · '+spec.split('·')[0].trim():'');}
   document.getElementById('notif-body').textContent=notifTxt;
-  go(7);
+  go(8);
 }
 
 function setStatus(outcome){
@@ -1015,7 +1084,7 @@ function setStatus(outcome){
 // Lembrar mais tarde
 var remindLabel='daqui a 2 semanas';
 function openRemind(){document.getElementById('modal-remind').classList.add('open');}
-function remindIn(label){remindLabel=label;closeModal('modal-remind');go(8,'lembrar');}
+function remindIn(label){remindLabel=label;closeModal('modal-remind');go(9,'lembrar');}
 
 // Chamada apoio Wellpath (simulada)
 var callTimer=null;
@@ -1110,7 +1179,7 @@ var _s=new URLSearchParams(location.search).get('s');
 if(_s!==null){
   var st=document.createElement('style');st.textContent='.screen{transition:none!important}';
   document.head.appendChild(st);
-  show(Math.max(0,Math.min(9,+_s||0)));
+  show(Math.max(0,Math.min(10,+_s||0)));
   setTimeout(function(){st.remove();},300);
 }
 </script>
